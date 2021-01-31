@@ -18,7 +18,9 @@
         {
             Set,
             Add,
-            Multiply
+            Subtract,
+            Multiply,
+            Divide
         }
 
         public enum ValueType
@@ -67,7 +69,9 @@
                 {
                     case Operation.Set : componentTarget.SetStatBase(id, value); break;
                     case Operation.Add: componentTarget.AddStatBase(id, value); break;
+                    case Operation.Subtract: componentTarget.AddStatBase(id, -value); break;
                     case Operation.Multiply: componentTarget.MultiplyStatBase(id, value); break;
+                    case Operation.Divide: componentTarget.MultiplyStatBase(id, (1f/value)); break;
                 }
             }
 

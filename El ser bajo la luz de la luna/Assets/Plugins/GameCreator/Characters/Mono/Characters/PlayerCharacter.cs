@@ -21,7 +21,8 @@
         {
             LeftClick = 0,
             RightClick = 1,
-            MiddleClick = 2
+            MiddleClick = 2,
+            None = -1
         }
 
         protected const string AXIS_H = "Horizontal";
@@ -44,8 +45,8 @@
         protected bool uiConstrained;
         protected Camera cacheCamera;
 
-        private Vector3 direction = Vector3.zero;
-        private Vector3 directionVelocity = Vector3.zero;
+        public Vector3 direction = Vector3.zero;
+        public Vector3 directionVelocity = Vector3.zero;
 
         public bool useAcceleration = true;
         public float acceleration = 4f;

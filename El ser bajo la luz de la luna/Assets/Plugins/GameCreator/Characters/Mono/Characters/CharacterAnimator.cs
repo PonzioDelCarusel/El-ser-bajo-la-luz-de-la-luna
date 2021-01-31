@@ -119,7 +119,7 @@
         [Range(0f, 1f)]
         public float timeScaleCoefficient = 1f;
 
-		// INITIALIZERS: --------------------------------------------------------------------------
+        // INITIALIZERS: --------------------------------------------------------------------------
 
 		private void Awake()
 		{
@@ -198,7 +198,7 @@
                             this.character.IsRagdoll()
                                 ? this.animator.transform.localRotation.eulerAngles.y
                                 : rotation.eulerAngles.y,
-                            ref this.rotationVelocity, 1f
+                            ref this.rotationVelocity, 0.2f
                         ),
                         rotation.eulerAngles.z
                     );
@@ -492,6 +492,24 @@
         public void SetStiffBody(bool stiffBody)
         {
             this.stiffBody = stiffBody;
+        }
+        
+        public void SetActiveWeightFeetIK(bool active)
+        {
+            if (this.footIK == null) return;
+            this.footIK.Active = active;
+        }
+        
+        public void SetActiveWeightHandsIK(bool active)
+        {
+            if (this.handIK == null) return;
+            this.handIK.Active = active;
+        }
+        
+        public void SetActiveWeightHeadIK(bool active)
+        {
+            if (this.headTrack == null) return;
+            this.headTrack.Active = active;
         }
 
 		// PRIVATE METHODS: -----------------------------------------------------------------------

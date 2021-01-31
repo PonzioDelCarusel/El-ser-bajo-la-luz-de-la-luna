@@ -1,4 +1,6 @@
-﻿namespace GameCreator.Characters
+﻿using System;
+
+namespace GameCreator.Characters
 {
 	using System.Collections;
 	using System.Collections.Generic;
@@ -6,7 +8,7 @@
 	using GameCreator.Core.Hooks;
 
 	[AddComponentMenu("")]
-	public class CharacterHeadTrack : MonoBehaviour 
+	public class CharacterHeadTrack : MonoBehaviour, IToggleIK
 	{
         private const float AIM_DISTANCE = 10f;
         private const float VISION_ANGLE = 220f;
@@ -113,6 +115,10 @@
 
         public CharacterAnimator.EventIK eventBeforeIK = new CharacterAnimator.EventIK();
         public CharacterAnimator.EventIK eventAfterIK = new CharacterAnimator.EventIK();
+        
+        public bool Active { get; set; }
+        private float activeValue = 0f;
+        private float activeValueVelocity = 0f;
 
         // MAIN METHODS: --------------------------------------------------------------------------
 
@@ -124,6 +130,9 @@
             Character character = gameObject.GetComponentInParent<Character>();
             this.trackInfo = new TrackInfo(character);
 			this.headTarget = new Target();
+
+			this.Active = true;
+			this.activeValue = 1f;
 		}
 
 		private void OnAnimatorIK (int layerIndex) 
@@ -141,10 +150,19 @@
 			}
 
 			this.animator.SetLookAtPosition(this.trackInfo.currentPosition);
-			this.animator.SetLookAtWeight(this.trackInfo.currentWeight);
+			this.animator.SetLookAtWeight(this.trackInfo.currentWeight * this.activeValue);
 
             this.eventAfterIK.Invoke(layerIndex);
         }
+
+		private void Update()
+		{
+			this.activeValue = Mathf.SmoothDamp(
+				this.activeValue, 
+				this.Active ? 1f : 0f, 
+				ref this.activeValueVelocity, 0.2f
+			);
+		}
 
 		// PUBLIC METHODS: ------------------------------------------------------------------------
 

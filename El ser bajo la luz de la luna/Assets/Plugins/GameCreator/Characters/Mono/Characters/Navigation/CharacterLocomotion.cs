@@ -64,7 +64,6 @@
         public bool isBusy = false;
 
         public float runSpeed = 4.0f;
-        [Range(0, 720f)]
         public float angularSpeed = 540f;
         public float gravity = -9.81f;
         public float maxFallSpeed = -100f;
@@ -179,7 +178,7 @@
 
             bool jumpDelay = this.lastJumpTime + this.timeBetweenJumps < Time.time;
             bool jumpNumber = isGrounded || this.jumpChain < this.jumpTimes;
-            if (this.canJump && jumpNumber && jumpDelay)
+            if (this.canJump && jumpNumber && jumpDelay && !this.isBusy)
             {
                 this.verticalSpeed = jumpForce;
                 this.lastJumpTime = Time.time;
@@ -317,6 +316,11 @@
         public void UseGravity(bool useGravity)
         {
             this.useGravity = useGravity;
+        }
+
+        public void SetVerticalSpeed(float speed)
+        {
+            this.verticalSpeed = speed;
         }
 
         // PRIVATE METHODS: -----------------------------------------------------------------------

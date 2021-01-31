@@ -41,7 +41,7 @@
             }
 
             TimeSpan timeSpan = DateTime.Now - lastCheck;
-            if (timeSpan.TotalDays >= 1)
+            if (timeSpan.TotalDays >= 1 && lastCheck != DateTime.MinValue)
             {
                 SaveCheckTime();
                 UpdateHttpRequest.Request(GAMECREATOR_BUNDLE, OnRetrieveUpdate);

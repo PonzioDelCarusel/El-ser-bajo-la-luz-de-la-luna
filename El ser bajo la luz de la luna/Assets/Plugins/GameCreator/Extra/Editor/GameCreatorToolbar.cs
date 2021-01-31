@@ -240,9 +240,9 @@
                 default: style = null; break;
             }
 
-            if (GUILayout.Button(item.GetContent(), style, GUILayout.Width(BUTTONS_WIDTH)))
+            if (GUILayout.Button(item?.GetContent(), style, GUILayout.Width(BUTTONS_WIDTH)))
             {
-                if (item.callback != null) item.callback.Invoke();
+                item?.callback?.Invoke();
             }
 
             Rect rect = GUILayoutUtility.GetLastRect();
@@ -253,7 +253,7 @@
                 rect.height
             );
 
-            GUI.DrawTexture(textureRect, item.GetTexture());
+            GUI.DrawTexture(textureRect, item?.GetTexture());
             EditorGUIUtility.AddCursorRect(rect, cursor);
         }
     }

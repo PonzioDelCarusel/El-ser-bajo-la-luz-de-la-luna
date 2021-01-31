@@ -32,7 +32,7 @@
         private void Start()
         {
             Stats stats = this.GetStatsTarget();
-            if (stats == null) return;
+            if (!stats) return;
 
             stats.AddOnChangeStat(this.UpdateStatUI);
             this.UpdateStatUI(null);
@@ -43,7 +43,7 @@
             if (this.exitingApplication) return;
 
             Stats stats = this.GetStatsTarget();
-            if (stats == null) return;
+            if (!stats) return;
 
             stats.RemoveOnChangeStat(this.UpdateStatUI);
         }
@@ -57,13 +57,13 @@
 
         private Stats GetStatsTarget()
         {
-            if (this.stat == null) return null;
+            if (!this.stat) return null;
 
             GameObject targetGO = this.target.GetGameObject(gameObject);
-            if (targetGO == null) return null;
+            if (!targetGO) return null;
 
             Stats stats = targetGO.GetComponentInChildren<Stats>(true);
-            if (stats == null) return null;
+            if (!stats) return null;
 
             return stats;
         }
@@ -71,18 +71,18 @@
         private void UpdateStatUI(Stats.EventArgs args)
         {
             Stats stats = this.GetStatsTarget();
-            if (stats == null) return;
+            if (!stats) return;
 
             string statID = this.stat.stat.uniqueName;
 
-            if (this.icon != null) this.icon.overrideSprite = stats.GetStatIcon(statID);
-            if (this.color != null) this.color.color = stats.GetStatColor(statID);
-            if (this.title != null) this.title.text = stats.GetStatTitle(statID);
-            if (this.description != null) this.description.text = stats.GetStatDescription(statID);
-            if (this.shortName != null) this.shortName.text = stats.GetStatShortName(statID);
+            if (this.icon) this.icon.overrideSprite = stats.GetStatIcon(statID);
+            if (this.color) this.color.color = stats.GetStatColor(statID);
+            if (this.title) this.title.text = stats.GetStatTitle(statID);
+            if (this.description) this.description.text = stats.GetStatDescription(statID);
+            if (this.shortName) this.shortName.text = stats.GetStatShortName(statID);
 
-            if (this.value != null) this.value.text = stats.GetStat(statID, null).ToString();
-            if (this.imageFill != null) this.imageFill.fillAmount = stats.GetStat(statID, null);
+            if (this.value) this.value.text = stats.GetStat(statID, null).ToString();
+            if (this.imageFill) this.imageFill.fillAmount = stats.GetStat(statID, null);
         }
     }
 }

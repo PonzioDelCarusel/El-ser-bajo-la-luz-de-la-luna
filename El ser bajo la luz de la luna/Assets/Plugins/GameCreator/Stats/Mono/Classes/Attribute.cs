@@ -19,6 +19,8 @@
         public Sprite icon = null;
         public Color color = Color.grey;
 
+        public float minValue = 0f;
+
         [StatSelector]
         [Tooltip("Maximum value of the Attribute")]
         public StatAsset stat;

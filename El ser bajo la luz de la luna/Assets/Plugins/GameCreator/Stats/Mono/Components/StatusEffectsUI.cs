@@ -36,7 +36,7 @@
         private void Start()
         {
             this.stats = this.GetStatsTarget();
-            if (this.stats == null) return;
+            if (!this.stats) return;
 
             this.stats.AddOnChangeStef(this.UpdateStatusEffectsList);
             this.UpdateStatusEffectsList(null);
@@ -45,7 +45,7 @@
         private void OnDestroy()
         {
             if (this.exitingApplication) return;
-            if (this.stats == null) return;
+            if (!this.stats) return;
 
             this.stats.RemoveOnChangeStef(this.UpdateStatusEffectsList);
         }
@@ -60,17 +60,17 @@
         private Stats GetStatsTarget()
         {
             GameObject targetGO = this.target.GetGameObject(gameObject);
-            if (targetGO == null) return null;
+            if (!targetGO) return null;
 
             Stats statsComponent = targetGO.GetComponentInChildren<Stats>(true);
-            if (statsComponent == null) return null;
+            if (!statsComponent) return null;
 
             return statsComponent;
         }
 
         private void UpdateStatusEffectsList(Stats.EventArgs args)
         {
-            if (this.stats == null) return;
+            if (!this.stats) return;
 
             List<string> statusEffectsList = (this.show == StatusEffectType.All
                 ? this.stats.GetStatusEffects()

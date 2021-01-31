@@ -25,6 +25,7 @@
         private SerializedProperty spPrefabSimpleMessage;
         private SerializedProperty spPrefabTouchstick;
         private SerializedProperty spForceDisplayTouchstick;
+        private SerializedProperty spTouchstickMode;
         private SerializedProperty spSaveScenes;
         private SerializedProperty spProvider;
         private SerializedProperty spToolbarPositionX;
@@ -46,6 +47,7 @@
             this.spPrefabSimpleMessage = serializedObject.FindProperty("prefabSimpleMessage");
             this.spPrefabTouchstick = serializedObject.FindProperty("prefabTouchstick");
             this.spForceDisplayTouchstick = serializedObject.FindProperty("forceDisplayInEditor");
+            this.spTouchstickMode = serializedObject.FindProperty("touchstickMode");
             this.spSaveScenes = serializedObject.FindProperty("saveScenes");
             this.spProvider = serializedObject.FindProperty("provider");
             this.spToolbarPositionX = serializedObject.FindProperty("toolbarPositionX");
@@ -105,6 +107,7 @@
             
             EditorGUILayout.PropertyField(this.spPrefabTouchstick);
             EditorGUILayout.PropertyField(this.spForceDisplayTouchstick);
+            EditorGUILayout.PropertyField(this.spTouchstickMode);
 
             this.PaintProvider();
 

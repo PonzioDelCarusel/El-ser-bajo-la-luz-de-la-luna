@@ -66,12 +66,14 @@
 		public PlatformIgniters igniters = new PlatformIgniters();
         public List<Item> items = new List<Item>();
 
+        private int disableFrame = -1;
+
 		// ADVANCED PROPERTIES: -------------------------------------------------------------------
 
 		public bool minDistance = false;
 		public float minDistanceToPlayer = 5.0f;
 
-        // EVENTS: --------------------------------------------------------------------------------
+		// EVENTS: --------------------------------------------------------------------------------
 
         public TriggerEvent onExecute = new TriggerEvent();
 
@@ -81,6 +83,11 @@
 		{
 			EventSystemManager.Instance.Wakeup();
 			this.SetupPlatformIgniter();
+		}
+
+		private void OnDisable()
+		{
+			this.disableFrame = Time.frameCount;
 		}
 
 		private void SetupPlatformIgniter()
@@ -172,7 +179,7 @@
 
         public virtual void Execute(GameObject target, params object[] parameters)
 		{
-			if (!this.isActiveAndEnabled) return;
+			if (!this.isActiveAndEnabled && Time.frameCount > this.disableFrame) return;
 
 			if (this.minDistance && HookPlayer.Instance != null)
 			{

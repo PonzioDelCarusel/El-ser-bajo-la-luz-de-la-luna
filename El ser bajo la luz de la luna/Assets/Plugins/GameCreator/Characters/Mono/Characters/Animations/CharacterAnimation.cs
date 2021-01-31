@@ -360,14 +360,14 @@
         private void Setup()
         {
             if (!this.runtimeController) throw new Exception(ERR_NORTC);
-
+            
             if (this.characterAnimator.animator.playableGraph.IsValid())
             {
                 this.characterAnimator.animator.playableGraph.Destroy();
             }
-
+            
             if (this.graph.IsValid()) this.graph.Destroy();
-
+            
             this.graph = PlayableGraph.Create(GRAPH_NAME);
             this.graph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
 
@@ -380,8 +380,7 @@
             this.SetupSectionStates();
             this.SetupSectionGestures();
 
-            output.SetSourcePlayable(this.mixerGesturesOutput);
-            output.SetSourceOutputPort(0);
+            output.SetSourcePlayable(this.mixerGesturesOutput, 0);
 
             this.graph.Play();
         }

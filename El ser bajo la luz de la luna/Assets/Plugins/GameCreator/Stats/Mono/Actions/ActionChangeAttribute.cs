@@ -18,7 +18,9 @@
         {
             Set,
             Add,
+            Subtract,
             Multiply,
+            Divide
         }
 
         public enum ValueType
@@ -67,7 +69,9 @@
                 {
                     case Operation.Set : componentTarget.SetAttrValue(id, value); break;
                     case Operation.Add: componentTarget.AddAttrValue(id, value); break;
+                    case Operation.Subtract: componentTarget.AddAttrValue(id, -value); break;
                     case Operation.Multiply: componentTarget.MultiplyAttrValue(id, value); break;
+                    case Operation.Divide: componentTarget.MultiplyAttrValue(id, (1f/value)); break;
                 }
             }
 

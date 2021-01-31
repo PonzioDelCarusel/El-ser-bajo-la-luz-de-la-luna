@@ -33,14 +33,14 @@
         private void Start()
         {
             GameObject targetGO = this.target.GetGameObject(gameObject);
-            if (targetGO == null)
+            if (!targetGO)
             {
                 Debug.LogError("Trigger Stat Change: No target defined", null);
                 return;
             }
 
             this.component = targetGO.GetComponentInChildren<Stats>();
-            if (this.component == null)
+            if (!this.component)
             {
                 Debug.LogError("Trigger Stat Change: Could not get Stats component in target", null);
                 return;
@@ -52,7 +52,7 @@
 
         private void OnDestroy()
         {
-            if (this.isExitingApplication || this.component == null) return;
+            if (this.isExitingApplication || !this.component) return;
             this.component.RemoveOnChangeStat(this.OnChangeStat);
         }
 

@@ -16,7 +16,6 @@
         private const string PROP_FORMULA = "formula";
         private const string PROP_TABLE = "table";
 
-        private static readonly Regex RX_TEST = new Regex(@"^[\s\d\(\)\+\-\/\*]*$");
         private static readonly GUIContent GC_DOCUMENTATION = new GUIContent("Reference");
         private static readonly GUIContent GC_TABLE = new GUIContent("Progression Table");
         private static GUIContent VALIDATE_BOX_TEXT = new GUIContent("");
@@ -60,11 +59,11 @@
 
         private static readonly Doc[] DOCUMENTATION = new Doc[] {
             new Doc("<b>this</b>[<color=#666666>value</color>]", "Returns the current stat value (without modifiers)"),
-            new Doc("<b>table</b>(<color=#666666>input</color>)", "Returns the corresponding value of the table given a numeric input"),
-            new Doc("<b>table</b>:rise(<color=#666666>input</color>)", "Returns the current percentage filled towards the next tier"),
-            new Doc("<b>rand</b>(<color=#666666>min</color>, <color=#666666>max</color>)", "Returns a random integer between min (inclusive) and max (exclusive)"),
-            new Doc("<b>dice</b>(<color=#666666>rolls</color>, <color=#666666>sides</color>)", "Returns the result of rolling a dice with a defined set of parameters"),
-            new Doc("<b>chance</b>(<color=#666666>input</color>)", "Returns 1 if a random value (from 0 to 1) is < or = than the input, and 0 otherwise"),
+            new Doc("<b>table</b>[<color=#666666>input</color>]", "Returns the corresponding value of the table given a numeric input"),
+            new Doc("<b>table</b>:rise[<color=#666666>input</color>]", "Returns the current percentage filled towards the next tier"),
+            new Doc("<b>rand</b>[<color=#666666>min</color>, <color=#666666>max</color>]", "Returns a random integer between min (inclusive) and max (exclusive)"),
+            new Doc("<b>dice</b>[<color=#666666>rolls</color>, <color=#666666>sides</color>]", "Returns the result of rolling a dice with a defined set of parameters"),
+            new Doc("<b>chance</b>[<color=#666666>input</color>]", "Returns 1 if a random value (from 0 to 1) is < or = than the input, and 0 otherwise"),
             new Doc("<b>stat</b>[<color=#666666>name</color>]", "Returns the value of a stat identified by 'name'"),
             new Doc("<b>attr</b>[<color=#666666>name</color>]", "Returns the value of an attribute identified by 'name'"),
             new Doc("<b>stat</b>:other[<color=#666666>name</color>]", "Returns the opponent (if any) stat value identified by 'name'"),
@@ -72,8 +71,11 @@
             new Doc("<b>local</b>[<color=#666666>name</color>]", "Returns the value of a local number variable identified by 'name'"),
             new Doc("<b>local</b>:other[<color=#666666>name</color>]", "Returns the opponent (if any) value of a local number variable identified by 'name'"),
             new Doc("<b>global</b>[<color=#666666>name</color>]", "Returns the value of a global variable identified by 'name'"),
-            new Doc("<b>min</b>(<color=#666666>a</color>, <color=#666666>b</color>)", "Returns the smallest value"),
-            new Doc("<b>max</b>(<color=#666666>a</color>, <color=#666666>b</color>)", "Returns the largest value"),
+            new Doc("<b>min</b>[<color=#666666>a</color>, <color=#666666>b</color>]", "Returns the smallest value"),
+            new Doc("<b>max</b>[<color=#666666>a</color>, <color=#666666>b</color>]", "Returns the largest value"),
+            new Doc("<b>round</b>[<color=#666666>value</color>]", "Rounds the value to the nearest integer"),
+            new Doc("<b>floor</b>[<color=#666666>value</color>]", "Returns the largest integer smaller or equal"),
+            new Doc("<b>ceil</b>[<color=#666666>value</color>]", "Returns the smallest integer greater or equal to X"),
         };
 
         // PAINT METHODS: -------------------------------------------------------------------------
@@ -279,19 +281,9 @@
 
         private void ValidateFormula(string formula)
         {
-            StringBuilder sbFormula = new StringBuilder(formula.Replace(" ", string.Empty));
+            bool checkDelimiters = CheckDelimiters(formula);
 
-            for (int i = 0; i < Formula.OPERATIONS.Length; ++i)
-            {
-                MatchCollection matches = Formula.OPERATIONS[i].regex.Matches(sbFormula.ToString());
-                for (int j = matches.Count - 1; j >= 0; --j)
-                {
-                    sbFormula.Remove(matches[j].Index, matches[j].Length);
-                    sbFormula.Insert(matches[j].Index, "0");
-                }
-            }
-
-            if (RX_TEST.IsMatch(sbFormula.ToString()))
+            if (checkDelimiters)
             {
                 VALIDATE_BOX_TEXT = new GUIContent(" Expression seems valid", TEXTURE_VALID);
             }
@@ -299,6 +291,37 @@
             {
                 VALIDATE_BOX_TEXT = new GUIContent(" Oops! There's something wrong", TEXTURE_ERROR);
             }
+        }
+
+        private static readonly Dictionary<char, char> DELIMITERS = new Dictionary<char, char>()
+        {
+            { ')', '(' },
+            { ']', '[' },
+        };
+
+        private static bool CheckDelimiters(string content)
+        {
+            Stack<char> delimiters = new Stack<char>();
+
+            for (int i = 0; i < content.Length; ++i)
+            {
+                switch (content[i])
+                {
+                    case '[':
+                    case '(':
+                        delimiters.Push(content[i]);
+                        break;
+
+                    case ']':
+                    case ')':
+                        if (delimiters.Count > 0 && delimiters.Peek() == DELIMITERS[content[i]]) delimiters.Pop();
+                        else return false;
+                        break;
+                }
+            }
+
+            if (delimiters.Count > 0) return false;
+            return true;
         }
     }
 }

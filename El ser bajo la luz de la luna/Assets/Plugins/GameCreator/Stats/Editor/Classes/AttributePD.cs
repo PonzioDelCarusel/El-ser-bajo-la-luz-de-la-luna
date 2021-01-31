@@ -5,6 +5,7 @@
     using UnityEngine;
     using UnityEditor;
     using GameCreator.Variables;
+    using UnityEngine.UI;
 
     [CustomPropertyDrawer(typeof(Attribute))]
     public class AttributePD : PropertyDrawer
@@ -15,6 +16,7 @@
         public const string PROP_DESCR = "description";
         public const string PROP_COLOR = "color";
         public const string PROP_ICON = "icon";
+        public const string PROP_MIN = "minValue";
         public const string PROP_STAT = "stat";
         public const string PROP_PERCENT = "percent";
 
@@ -105,10 +107,17 @@
 
         private Rect PaintBody(Rect rect, SerializedProperty property)
         {
-            Rect rectStat = new Rect(
+            Rect rectMin = new Rect(
                 rect.x,
                 rect.y + ELEM_HEIGHT,
                 rect.width,
+                ELEM_HEIGHT
+            );
+
+            Rect rectStat = new Rect(
+                rectMin.x,
+                rectMin.y + rectMin.height + ELEM_PADDING,
+                rectMin.width,
                 ELEM_HEIGHT
             );
 
@@ -119,6 +128,7 @@
                 ELEM_HEIGHT
             );
 
+            EditorGUI.PropertyField(rectMin, property.FindPropertyRelative(PROP_MIN));
             EditorGUI.PropertyField(rectStat, property.FindPropertyRelative(PROP_STAT), GC_STAT);
             EditorGUI.PropertyField(rectValue, property.FindPropertyRelative(PROP_PERCENT), GC_VALUE);
 
@@ -130,7 +140,7 @@
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float header = RECT_SPRITE.y;
-            float body = ELEM_HEIGHT + ELEM_HEIGHT + ELEM_PADDING;
+            float body = ELEM_HEIGHT + ELEM_HEIGHT + ELEM_PADDING + ELEM_HEIGHT + ELEM_PADDING;
             return header + body;
         }
 

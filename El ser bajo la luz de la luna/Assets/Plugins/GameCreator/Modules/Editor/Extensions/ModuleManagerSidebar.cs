@@ -59,9 +59,13 @@
             EditorGUILayout.Space();
         }
 
+        private static Vector2 ScrollPosition = Vector2.zero;
+        
         public static void PaintSidebarProjects()
         {
             ModuleManifest[] manifests = ModuleManager.GetProjectManifests();
+            ScrollPosition = EditorGUILayout.BeginScrollView(ScrollPosition);
+            
             for (int i = 0; i < manifests.Length; ++i)
             {
                 GUIContent text = new GUIContent(
@@ -75,6 +79,8 @@
                     ModuleManagerWindow.WINDOW.Repaint();
                 }
             }
+            
+            EditorGUILayout.EndScrollView();
         }
 
         // STYLE METHODS: -------------------------------------------------------------------------

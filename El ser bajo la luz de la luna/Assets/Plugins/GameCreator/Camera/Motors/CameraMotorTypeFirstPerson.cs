@@ -205,24 +205,19 @@
             if (!playerCharacter.IsGrounded()) return Vector3.zero;
 
             float speed = Mathf.Abs(state.forwardSpeed.magnitude);
-            speed = (
-                speed > playerCharacter.characterLocomotion.runSpeed - 0.1f ? 1f :
-                speed > (playerCharacter.characterLocomotion.runSpeed / 2f) - 0.1f ? 0.5f :
-                0f
+            float coeff = Mathf.InverseLerp(
+                playerCharacter.characterLocomotion.runSpeed / 2f, 
+                playerCharacter.characterLocomotion.runSpeed, 
+                speed
             );
-
-            this.headbobLerpAmount = Mathf.SmoothDamp(
-                this.headbobLerpAmount, speed,
-                ref this.headbobLerpVelocity, 0.1f
-            );
-
+            
             Vector3 headbobVector = new Vector3(
-                Mathf.Sin((speed / this.headbobPeriod) * 2.0f * Time.time) * this.headbobAmount.x,
-                Mathf.Sin((speed / this.headbobPeriod) * 1.0f * Time.time) * this.headbobAmount.y,
-                Mathf.Sin((speed / this.headbobPeriod) * 1.0f * Time.time) * this.headbobAmount.z
+                Mathf.Sin((1f / this.headbobPeriod) * 2.0f * Time.time) * this.headbobAmount.x,
+                Mathf.Sin((1f / this.headbobPeriod) * 1.0f * Time.time) * this.headbobAmount.y,
+                Mathf.Sin((1f / this.headbobPeriod) * 1.0f * Time.time) * this.headbobAmount.z
             );
-
-            return Vector3.Slerp(Vector3.zero, headbobVector, this.headbobLerpAmount);
+            
+            return headbobVector * coeff;
         }
 
         private void RotationInput()

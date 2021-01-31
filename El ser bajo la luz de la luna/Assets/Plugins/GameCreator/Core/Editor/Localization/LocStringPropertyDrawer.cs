@@ -38,11 +38,11 @@
 
 			EditorGUI.PropertyField(spContentRect, spContent, label);
 
-			GUIStyle translationStyle = (spTranslationID.intValue == 0
+			GUIStyle translationStyle = spTranslationID.intValue == 0
 				? CoreGUIStyles.GetGridButtonRightOff()
-				: CoreGUIStyles.GetGridButtonRightOn()
-			);
-				
+				: CoreGUIStyles.GetGridButtonRightOn();
+
+			GUI.backgroundColor = spTranslationID.intValue == 0 ? Color.white : Color.cyan;
 			if (GUI.Button(spTranslationIDRect, GUICONTENT_TRANSLATION, translationStyle))
 			{
 				if (spTranslationID.intValue == 0)
@@ -63,6 +63,7 @@
 					spTranslationID.intValue = 0;
 				}
 			}
+			GUI.backgroundColor = Color.white;
 
 			if (spTranslationID.intValue != 0)
 			{

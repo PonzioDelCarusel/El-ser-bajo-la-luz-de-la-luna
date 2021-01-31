@@ -25,6 +25,11 @@
         private const string PROP_SCALEX = "valueScaleX";
         private const string PROP_SCALEY = "valueScaleY";
 
+        private const string PROP_TRANS_UP = "smoothTransitionUp";
+        private const string PROP_TRANS_DN = "smoothTransitionDown";
+        private const string PROP_TRANS_SPEED = "transitionSpeed";
+        private const string PROP_TRANS_DELAY = "transitionDelay";
+
         // PROPERTIES: ----------------------------------------------------------------------------
 
         private SerializedProperty spTarget;
@@ -42,6 +47,11 @@
         private SerializedProperty spValueFillImage;
         private SerializedProperty spValueScaleX;
         private SerializedProperty spValueScaleY;
+
+        private SerializedProperty spTransitionUp;
+        private SerializedProperty spTransitionDn;
+        private SerializedProperty spTransitionSpeed;
+        private SerializedProperty spTransitionDelay;
 
         // INITIALIZERS: --------------------------------------------------------------------------
 
@@ -62,6 +72,11 @@
             this.spValueFillImage = serializedObject.FindProperty(PROP_FILL);
             this.spValueScaleX = serializedObject.FindProperty(PROP_SCALEX);
             this.spValueScaleY = serializedObject.FindProperty(PROP_SCALEY);
+
+            this.spTransitionUp = serializedObject.FindProperty(PROP_TRANS_UP);
+            this.spTransitionDn = serializedObject.FindProperty(PROP_TRANS_DN);
+            this.spTransitionSpeed = serializedObject.FindProperty(PROP_TRANS_SPEED);
+            this.spTransitionDelay = serializedObject.FindProperty(PROP_TRANS_DELAY);
         }
 
         // PAINT METHODS: -------------------------------------------------------------------------
@@ -91,6 +106,12 @@
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(this.spValueScaleX);
             EditorGUILayout.PropertyField(this.spValueScaleY);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(this.spTransitionUp);
+            EditorGUILayout.PropertyField(this.spTransitionDn);
+            EditorGUILayout.PropertyField(this.spTransitionSpeed);
+            EditorGUILayout.PropertyField(this.spTransitionDelay);
 
             serializedObject.ApplyModifiedProperties();
         }

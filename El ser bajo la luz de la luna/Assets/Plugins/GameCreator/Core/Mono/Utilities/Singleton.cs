@@ -2,6 +2,7 @@
 {
 	using UnityEngine;
 	using System.Collections;
+	using System;
 
     public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 	{
@@ -20,11 +21,23 @@
 		// CONSTRUCTOR: ---------------------------------------------------------------------------
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        protected static void OnRuntimeStartSingleton()
+        public static void OnRuntimeStartSingleton()
         {
 			IS_EXITING = false;
 		}
 
+        public void UsedOnlyForAOTCodeGeneration()
+        {
+	        // IL2CPP needs only this line.
+	        OnRuntimeStartSingleton();
+
+	        // Include an exception so we can be sure to know if this method is ever called.
+	        throw new InvalidOperationException(
+		        "This method is used for AOT code generation only. " +
+		        "Do not call it at runtime."
+		    );
+        }
+        
 		public static T Instance
 		{
 			get

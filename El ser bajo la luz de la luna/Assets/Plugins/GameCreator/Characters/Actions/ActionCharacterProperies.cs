@@ -24,7 +24,8 @@
             JumpTimes,
             Gravity,
             MaxFallSpeed,
-            CanJump
+            CanJump,
+            Busy
 		}
 
         public TargetCharacter target = new TargetCharacter(TargetCharacter.Target.Player);
@@ -79,6 +80,10 @@
                     case CHANGE_PROPERTY.CanJump:
                         charTarget.characterLocomotion.canJump = this.valueBool.GetValue(target);
                         break;
+                    
+                    case CHANGE_PROPERTY.Busy:
+	                    charTarget.characterLocomotion.isBusy = this.valueBool.GetValue(target);
+	                    break;
                 }
             }
 
@@ -147,6 +152,7 @@
                 case CHANGE_PROPERTY.Gravity: EditorGUILayout.PropertyField(this.spValueNumber); break;
                 case CHANGE_PROPERTY.MaxFallSpeed: EditorGUILayout.PropertyField(this.spValueNumber); break;
                 case CHANGE_PROPERTY.CanJump: EditorGUILayout.PropertyField(this.spValueBool); break;
+                case CHANGE_PROPERTY.Busy: EditorGUILayout.PropertyField(this.spValueBool); break;
             }
 
 			this.serializedObject.ApplyModifiedProperties();

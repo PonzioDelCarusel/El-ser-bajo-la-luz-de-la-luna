@@ -1,11 +1,9 @@
 ﻿namespace GameCreator.Characters
 {
-    using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
 
     [AddComponentMenu("")]
-    public class CharacterFootIK : MonoBehaviour
+    public class CharacterFootIK : MonoBehaviour, IToggleIK
     {
         private const float FOOT_OFFSET_Y = 0.1f;
         private const float SMOOTH_POSITION = 0.1f;
@@ -57,6 +55,10 @@
         public CharacterAnimator.EventIK eventAfterIK = new CharacterAnimator.EventIK();
 
         private RaycastHit[] hitBuffer = new RaycastHit[1];
+        
+        public bool Active { get; set; }
+        private float activeValue = 0f;
+        private float activeValueVelocity = 0f;
 
         // INITIALIZERS: --------------------------------------------------------------------------
 
@@ -75,6 +77,18 @@
             this.rightFoot = new Foot(rFoot, AvatarIKGoal.RightFoot, IK_R_FOOT);
 
             this.defaultOffset = transform.localPosition.y;
+            
+            this.Active = true;
+            this.activeValue = 1f;
+        }
+
+        private void Update()
+        {
+            this.activeValue = Mathf.SmoothDamp(
+                this.activeValue, 
+                this.Active ? 1f : 0f, 
+                ref this.activeValueVelocity, 0.05f
+            );
         }
 
         private void LateUpdate()
@@ -147,7 +161,7 @@
                 float angle = Vector3.Angle(transform.up, foot.normal);
                 Quaternion rotation = Quaternion.AngleAxis(angle * weight, rotationAxis);
 
-                this.animator.SetIKRotationWeight(foot.footIK, weight);
+                this.animator.SetIKRotationWeight(foot.footIK, weight * this.activeValue);
                 this.animator.SetIKRotation(foot.footIK, rotation * this.animator.GetIKRotation(foot.footIK));
 
                 float baseHeight = this.transform.position.y - FOOT_OFFSET_Y;
@@ -158,13 +172,13 @@
                     foot.foot.position.z
                 );
 
-                this.animator.SetIKPositionWeight(foot.footIK, weight);
+                this.animator.SetIKPositionWeight(foot.footIK, weight * this.activeValue);
                 this.animator.SetIKPosition(foot.footIK, position);
             }
             else
             {
-                this.animator.SetIKPositionWeight(foot.footIK, weight);
-                this.animator.SetIKRotationWeight(foot.footIK, weight);
+                this.animator.SetIKPositionWeight(foot.footIK, weight * this.activeValue);
+                this.animator.SetIKRotationWeight(foot.footIK, weight * this.activeValue);
             }
         }
 

@@ -17,6 +17,7 @@
 
         // PROPERTIES: ----------------------------------------------------------------------------
 
+        [SerializeField]
         public GetVarType variableType = GetVarType.GlobalVariable;
 
         public HelperGlobalVariable global = new HelperGlobalVariable();

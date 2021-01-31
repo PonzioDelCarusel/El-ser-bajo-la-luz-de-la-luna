@@ -12,13 +12,18 @@
 	{
         protected override void OnCreate ()
 		{
-            EventSystem eventSystem = GameObject.FindObjectOfType<EventSystem>();
-            StandaloneInputModule input = GameObject.FindObjectOfType<StandaloneInputModule>();
+            EventSystem eventSystem = FindObjectOfType<EventSystem>();
+            StandaloneInputModule input = FindObjectOfType<StandaloneInputModule>();
 
+            GameObject defaultSelection = null;
+            if (eventSystem != null) defaultSelection = eventSystem.firstSelectedGameObject;
+            
             if (input != null) Destroy(input);
             if (eventSystem != null) Destroy(eventSystem);
 
-            gameObject.AddComponent<EventSystem>();
+            EventSystem newEventSystem = gameObject.AddComponent<EventSystem>();
+            newEventSystem.firstSelectedGameObject = defaultSelection;
+            
             this.inputModule = gameObject.AddComponent<GameCreatorStandaloneInputModule>();
 
 			SceneManager.sceneLoaded += this.OnSceneLoad;
@@ -26,7 +31,7 @@
 
 		public void Wakeup()
 		{
-			return;
+            return;
 		}
 
         // PROPERTIES: ----------------------------------------------------------------------------

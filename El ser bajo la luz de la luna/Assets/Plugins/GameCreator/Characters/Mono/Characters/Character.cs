@@ -257,16 +257,30 @@
 
         public void Jump(float force)
         {
-            int jumpChain = this.characterLocomotion.Jump(force);
-            if (jumpChain >= 0 && this.animator != null)
-            {
-                this.animator.Jump();
-            }
+            // int jumpChain = this.characterLocomotion.Jump(force);
+            // if (jumpChain >= 0 && this.animator != null)
+            // {
+            //     this.animator.Jump();
+            // }
+            StartCoroutine(this.DelayJump(0f, force));
         }
 
         public void Jump()
         {
-            int jumpChain = this.characterLocomotion.Jump();
+            // int jumpChain = this.characterLocomotion.Jump();
+            // if (jumpChain >= 0 && this.animator != null)
+            // {
+            //     this.animator.Jump(jumpChain);
+            // }
+            StartCoroutine(this.DelayJump(0f, this.characterLocomotion.jumpForce));
+        }
+
+        public IEnumerator DelayJump(float seconds, float force)
+        {
+            WaitForSeconds wait = new WaitForSeconds(seconds);
+            yield return wait;
+            
+            int jumpChain = this.characterLocomotion.Jump(force);
             if (jumpChain >= 0 && this.animator != null)
             {
                 this.animator.Jump(jumpChain);

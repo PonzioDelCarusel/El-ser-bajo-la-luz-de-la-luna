@@ -158,10 +158,6 @@
             }
         }
 
-        private class StatEvent : UnityEvent<EventArgs> { }
-        private class AttrEvent : UnityEvent<EventArgs> { }
-        private class StefEvent : UnityEvent<EventArgs> { }
-
         // STATIC AND CONSTANTS: ------------------------------------------------------------------
 
         private Dictionary<string, string> STATS_TLB = null;
@@ -169,15 +165,17 @@
 
         // PROPERTIES: ----------------------------------------------------------------------------
 
+        public bool saveStats = true;
+
         public List<OverrideStatData> statsOverrides = new List<OverrideStatData>();
 
         public Dictionary<string, RuntimeStatData> runtimeStatsData { get; private set; }
         public Dictionary<string, RuntimeAttrData> runtimeAttrsData { get; private set; }
         public Dictionary<string, RuntimeStefData> runtimeStefsData { get; private set; }
 
-        private StatEvent onChangeStat = new StatEvent();
-        private AttrEvent onChangeAttr = new AttrEvent();
-        private StefEvent onChangeStef = new StefEvent();
+        private Action<EventArgs> onChangeStat;
+        private Action<EventArgs> onChangeAttr;
+        private Action<EventArgs> onChangeStef;
 
         // INITIALIZERS: --------------------------------------------------------------------------
 
@@ -185,23 +183,22 @@
         {
             base.Awake();
             if (!Application.isPlaying) return;
-
             this.RequireInit();
         }
 
         private void Start()
         {
             if (!Application.isPlaying) return;
-            SaveLoadManager.Instance.Initialize(this);
+            if (this.saveStats) SaveLoadManager.Instance.Initialize(this);
         }
 
         private void OnDestroy()
         {
             this.OnDestroyGID();
             if (!Application.isPlaying) return;
-
             if (this.exitingApplication) return;
-            SaveLoadManager.Instance.OnDestroyIGameSave(this);
+
+            if (this.saveStats) SaveLoadManager.Instance.OnDestroyIGameSave(this);
         }
 
         // UPDATE METHOD: -------------------------------------------------------------------------
@@ -211,27 +208,49 @@
             if (!Application.isPlaying) return;
             if (this.runtimeStefsData == null) return;
 
+            Dictionary<string, int> removeStatusEffects = new Dictionary<string, int>();
             foreach (KeyValuePair<string, RuntimeStefData> item in this.runtimeStefsData)
             {
                 RuntimeStefData data = item.Value;
-
                 if (data.statusEffect.statusEffect.hasDuration)
                 {
-                    while (data.listStatus.Count > 0 &&
-                           data.listStatus[0].time + data.statusEffect.statusEffect.duration < Time.time)
+                    int listStatusIndex = 0;
+                    while (listStatusIndex < data.listStatus.Count &&
+                           data.listStatus[listStatusIndex].time + data.statusEffect.statusEffect.duration < Time.time)
                     {
-                        data.listStatus[0].OnEnd(gameObject);
-                        data.listStatus.RemoveAt(0);
-                        if (this.onChangeStef != null) this.onChangeStef.Invoke(new EventArgs(
-                            data.statusEffect.statusEffect.uniqueName, EventArgs.Operation.Remove
-                        ));
+                        data.listStatus[listStatusIndex].OnEnd(gameObject);
+                        if (!removeStatusEffects.ContainsKey(item.Key))
+                        {
+                            removeStatusEffects.Add(item.Key, 0);
+                        }
+
+                        removeStatusEffects[item.Key] += 1;
+                        listStatusIndex += 1;
                     }
                 }
 
                 int stackCount = data.listStatus.Count;
-                for (int i = 0; i < stackCount; ++i)
+                int index = (removeStatusEffects.ContainsKey(item.Key)
+                    ? removeStatusEffects[item.Key] : 0
+                );
+
+                while (index < stackCount)
                 {
-                    data.listStatus[i].OnUpdate(gameObject);
+                    data.listStatus[index].OnUpdate(gameObject);
+                    index += 1;
+                }
+            }
+
+            foreach (KeyValuePair<string, int> item in removeStatusEffects)
+            {
+                this.runtimeStefsData[item.Key].listStatus.RemoveRange(0, item.Value);
+
+                if (this.onChangeStef != null)
+                {
+                    this.onChangeStef.Invoke(new EventArgs(
+                        this.runtimeStefsData[item.Key].statusEffect.statusEffect.uniqueName,
+                        EventArgs.Operation.Remove
+                    ));
                 }
             }
         }
@@ -241,12 +260,12 @@
         public float GetStat(string stat, Stats target)
         {
             this.RequireInit();
-            RuntimeStatData data = this.runtimeStatsData[STATS_TLB[stat]];
+            RuntimeStatData data = this.GetRuntimeStat(stat);
             float result = 0.0f;
             if (data != null)
             {
                 result = data.baseValue;
-                if (data.formula != null)
+                if (data.formula)
                 {
                     result = data.formula.formula.Calculate(
                         data.baseValue, this, target
@@ -266,7 +285,7 @@
 
                         case StatModifier.EffectType.Percent:
                             sumPercent += (statModifier.value/100f);
-                            if (i + 1 >= data.statsModifiers.Count || 
+                            if (i + 1 >= data.statsModifiers.Count ||
                                 data.statsModifiers[i + 1].type != StatModifier.EffectType.Percent)
                             {
                                 result *= (1.0f + sumPercent);
@@ -288,7 +307,7 @@
         public float GetAttrValue(string attribute, Stats target)
         {
             this.RequireInit();
-            RuntimeAttrData data = this.runtimeAttrsData[ATTRS_TLB[attribute]];
+            RuntimeAttrData data = this.GetRuntimeAttr(attribute);
             return data.value;
         }
 
@@ -300,7 +319,7 @@
         public float GetAttrMaxValue(string attribute, Stats target)
         {
             this.RequireInit();
-            RuntimeAttrData data = this.runtimeAttrsData[ATTRS_TLB[attribute]];
+            RuntimeAttrData data = this.GetRuntimeAttr(attribute);
             return this.GetStat(data.statAsset.stat.uniqueName, target);
         }
 
@@ -324,7 +343,7 @@
         public void SetStatBase(string stat, float value, bool informCallbacks = true)
         {
             this.RequireInit();
-            RuntimeStatData data = this.runtimeStatsData[STATS_TLB[stat]];
+            RuntimeStatData data = this.GetRuntimeStat(stat);
             data.baseValue = value;
             if (data.onChange != null) data.onChange.Invoke();
             if (informCallbacks && this.onChangeStat != null) this.onChangeStat.Invoke(new EventArgs(
@@ -338,7 +357,7 @@
         public void AddStatBase(string stat, float value, bool informCallbacks = true)
         {
             this.RequireInit();
-            RuntimeStatData data = this.runtimeStatsData[STATS_TLB[stat]];
+            RuntimeStatData data = this.GetRuntimeStat(stat);
             data.baseValue += value;
 
             if (data.onChange != null) data.onChange.Invoke();
@@ -353,7 +372,7 @@
         public void MultiplyStatBase(string stat, float value, bool informCallbacks = true)
         {
             this.RequireInit();
-            RuntimeStatData data = this.runtimeStatsData[STATS_TLB[stat]];
+            RuntimeStatData data = this.GetRuntimeStat(stat);
             data.baseValue *= value;
 
             if (data.onChange != null) data.onChange.Invoke();
@@ -368,11 +387,11 @@
         public void SetAttrValue(string attribute, float value, bool informCallbacks = true)
         {
             this.RequireInit();
-            RuntimeAttrData data = this.runtimeAttrsData[ATTRS_TLB[attribute]];
+            RuntimeAttrData data = this.GetRuntimeAttr(attribute);
             data.value = value;
             data.value = Mathf.Clamp(
                 data.value,
-                0.0f,
+                data.attrAsset.attribute.minValue,
                 this.GetStat(data.statAsset.stat.uniqueName)
             );
 
@@ -388,11 +407,12 @@
         public void AddAttrValue(string attribute, float value, bool informCallbacks = true)
         {
             this.RequireInit();
-            RuntimeAttrData data = this.runtimeAttrsData[ATTRS_TLB[attribute]];
+            RuntimeAttrData data = this.GetRuntimeAttr(attribute);
+
             data.value += value;
             data.value = Mathf.Clamp(
                 data.value,
-                0.0f,
+                data.attrAsset.attribute.minValue,
                 this.GetStat(data.statAsset.stat.uniqueName)
             );
 
@@ -408,11 +428,11 @@
         public void MultiplyAttrValue(string attribute, float value, bool informCallbacks = true)
         {
             this.RequireInit();
-            RuntimeAttrData data = this.runtimeAttrsData[ATTRS_TLB[attribute]];
+            RuntimeAttrData data = this.GetRuntimeAttr(attribute);
             data.value *= value;
             data.value = Mathf.Clamp(
                 data.value,
-                0.0f,
+                data.attrAsset.attribute.minValue,
                 this.GetStat(data.statAsset.stat.uniqueName)
             );
 
@@ -429,52 +449,52 @@
 
         public string GetStatTitle(string statID)
         {
-            return this.runtimeStatsData[STATS_TLB[statID]].statAsset.stat.title.GetText();
+            return this.GetRuntimeStat(statID).statAsset.stat.title.GetText();
         }
 
         public string GetStatShortName(string statID)
         {
-            return this.runtimeStatsData[STATS_TLB[statID]].statAsset.stat.shortName;
+            return this.GetRuntimeStat(statID).statAsset.stat.shortName;
         }
 
         public string GetStatDescription(string statID)
         {
-            return this.runtimeStatsData[STATS_TLB[statID]].statAsset.stat.description.GetText();
+            return this.GetRuntimeStat(statID).statAsset.stat.description.GetText();
         }
 
         public Sprite GetStatIcon(string statID)
         {
-            return this.runtimeStatsData[STATS_TLB[statID]].statAsset.stat.icon;
+            return this.GetRuntimeStat(statID).statAsset.stat.icon;
         }
 
         public Color GetStatColor(string statID)
         {
-            return this.runtimeStatsData[STATS_TLB[statID]].statAsset.stat.color;
+            return this.GetRuntimeStat(statID).statAsset.stat.color;
         }
 
         public string GetAttrTitle(string attrID)
         {
-            return this.runtimeAttrsData[ATTRS_TLB[attrID]].attrAsset.attribute.title.GetText();
+            return this.GetRuntimeAttr(attrID).attrAsset.attribute.title.GetText();
         }
 
         public string GetAttrShortName(string attrID)
         {
-            return this.runtimeAttrsData[ATTRS_TLB[attrID]].attrAsset.attribute.shortName;
+            return this.GetRuntimeAttr(attrID).attrAsset.attribute.shortName;
         }
 
         public string GetAttrDescription(string attrID)
         {
-            return this.runtimeAttrsData[ATTRS_TLB[attrID]].attrAsset.attribute.description.GetText();
+            return this.GetRuntimeAttr(attrID).attrAsset.attribute.description.GetText();
         }
 
         public Sprite GetAttrIcon(string attrID)
         {
-            return this.runtimeAttrsData[ATTRS_TLB[attrID]].attrAsset.attribute.icon;
+            return this.GetRuntimeAttr(attrID).attrAsset.attribute.icon;
         }
 
         public Color GetAttrColor(string attrID)
         {
-            return this.runtimeAttrsData[ATTRS_TLB[attrID]].attrAsset.attribute.color;
+            return this.GetRuntimeAttr(attrID).attrAsset.attribute.color;
         }
 
         public string GetStatusEffectTitle(string statusEffect)
@@ -504,41 +524,41 @@
 
         // PUBLIC CALLBACK METHODS: ---------------------------------------------------------------
 
-        public void AddOnChangeStat(UnityAction<EventArgs> callback)
+        public void AddOnChangeStat(Action<EventArgs> callback)
         {
-            this.onChangeStat.AddListener(callback);
+            this.onChangeStat += (callback);
         }
 
-        public void RemoveOnChangeStat(UnityAction<EventArgs> callback)
+        public void RemoveOnChangeStat(Action<EventArgs> callback)
         {
-            this.onChangeStat.RemoveListener(callback);
+            this.onChangeStat -= callback;
         }
 
-        public void AddOnChangeAttr(UnityAction<EventArgs> callback)
+        public void AddOnChangeAttr(Action<EventArgs> callback)
         {
-            this.onChangeAttr.AddListener(callback);
+            this.onChangeAttr += callback;
         }
 
-        public void RemoveOnChangeAttr(UnityAction<EventArgs> callback)
+        public void RemoveOnChangeAttr(Action<EventArgs> callback)
         {
-            this.onChangeAttr.RemoveListener(callback);
+            this.onChangeAttr -= callback;
         }
 
-        public void AddOnChangeStef(UnityAction<EventArgs> callback)
+        public void AddOnChangeStef(Action<EventArgs> callback)
         {
-            this.onChangeStef.AddListener(callback);
+            this.onChangeStef += (callback);
         }
 
-        public void RemoveOnChangeStef(UnityAction<EventArgs> callback)
+        public void RemoveOnChangeStef(Action<EventArgs> callback)
         {
-            this.onChangeStef.RemoveListener(callback);
+            this.onChangeStef -= callback;
         }
 
         // PUBLIC STATUS EFFECT METHODS: ----------------------------------------------------------
 
         public void AddStatusEffect(StatusEffectAsset statusEffect, bool informCallbacks = true)
         {
-            if (statusEffect == null) return;
+            if (!statusEffect) return;
 
             this.RequireInit();
             if (!this.runtimeStefsData.ContainsKey(statusEffect.uniqueID))
@@ -567,7 +587,7 @@
 
         public void RemoveStatusEffect(StatusEffectAsset statusEffect, bool informCallbacks = true)
         {
-            if (statusEffect == null) return;
+            if (!statusEffect) return;
 
             this.RequireInit();
 
@@ -620,7 +640,7 @@
         public bool HasStatusEffect(StatusEffectAsset statusEffect, int amount = 1)
         {
             this.RequireInit();
-            if (statusEffect == null) return false;
+            if (!statusEffect) return false;
 
             return (
                 this.runtimeStefsData.ContainsKey(statusEffect.uniqueID) &&
@@ -661,7 +681,7 @@
         public void AddStatModifier(StatModifier statModifier, bool informCallbacks = true)
         {
             this.RequireInit();
-            if (statModifier.stat == null)
+            if (!statModifier.stat)
             {
                 Debug.LogError("AddStatModifier: Undefined Stat object");
                 return;
@@ -684,7 +704,7 @@
         public void RemoveStatModifier(StatModifier statModifier, bool informCallbacks = true)
         {
             this.RequireInit();
-            if (statModifier.stat == null)
+            if (!statModifier.stat)
             {
                 Debug.LogError("RemoveStatModifier: Undefined Stat object");
                 return;
@@ -732,7 +752,7 @@
 
         private void RequireInit(bool forceInit = false)
         {
-            if (!forceInit && this.runtimeStatsData != null && 
+            if (!forceInit && this.runtimeStatsData != null &&
                 this.runtimeAttrsData != null && this.runtimeStefsData != null)
             {
                 return;
@@ -751,7 +771,7 @@
                 for (int i = 0; i < originStats.Length; ++i)
                 {
                     STATS_TLB.Add(
-                        originStats[i].stat.uniqueName, 
+                        originStats[i].stat.uniqueName,
                         originStats[i].uniqueID
                     );
                 }
@@ -797,24 +817,25 @@
 
             for (int i = 0; i < originAttrs.Length; ++i)
             {
-                if (originAttrs[i].attribute.stat == null)
+                if (!originAttrs[i].attribute.stat)
                 {
                     Debug.LogErrorFormat(
-                        "Attribute {0} has no Stat assigned", 
+                        "Attribute {0} has no Stat assigned",
                         originAttrs[i].attribute.uniqueName
                     );
                     continue;
                 }
 
                 string statName = originAttrs[i].attribute.stat.stat.uniqueName;
+                float value = Mathf.Lerp(
+                    originAttrs[i].attribute.minValue,
+                    this.GetStat(statName),
+                    originAttrs[i].attribute.percent
+                );
 
                 this.runtimeAttrsData.Add(
                     originAttrs[i].uniqueID,
-                    new RuntimeAttrData(
-                        i, 
-                        originAttrs[i].attribute.percent * this.GetStat(statName), 
-                        originAttrs[i]
-                    )
+                    new RuntimeAttrData(i, value, originAttrs[i])
                 );
 
                 this.AddOnChangeStatUpdateAttribute(originAttrs[i].uniqueID);
@@ -828,10 +849,48 @@
             {
                 this.runtimeAttrsData[attrID].value = Mathf.Clamp(
                     this.runtimeAttrsData[attrID].value,
-                    0.0f,
+                    this.runtimeAttrsData[attrID].attrAsset.attribute.minValue,
                     this.GetStat(this.runtimeAttrsData[attrID].statAsset.stat.uniqueName)
                 );
             });
+        }
+
+        private RuntimeStatData GetRuntimeStat(string stat)
+        {
+            string statTLB = string.Empty;
+            if (!this.STATS_TLB.TryGetValue(stat, out statTLB))
+            {
+                Debug.LogError("Stat " + stat + " not present in TLB. Did you remove it?");
+                return null;
+            }
+
+            RuntimeStatData statData;
+            if (!this.runtimeStatsData.TryGetValue(statTLB, out statData))
+            {
+                Debug.LogError("Stat " + stat + " not present in RTD. Did you remove it?");
+                return null;
+            }
+
+            return statData;
+        }
+
+        private RuntimeAttrData GetRuntimeAttr(string attrID)
+        {
+            string attrTLB = string.Empty;
+            if (!this.ATTRS_TLB.TryGetValue(attrID, out attrTLB))
+            {
+                Debug.LogError("Attribute " + attrID + " not present in TLB. Did you remove it?");
+                return null;
+            }
+
+            RuntimeAttrData attrData;
+            if (!this.runtimeAttrsData.TryGetValue(attrTLB, out attrData))
+            {
+                Debug.LogError("Attribute " + attrID + " not present in RTD. Did you remove it?");
+                return null;
+            }
+
+            return attrData;
         }
 
         // IGAMESAVE: -----------------------------------------------------------------------------
@@ -906,6 +965,11 @@
                 string key = stats.stats[i].statUniqueID;
                 float baseValue = stats.stats[i].baseValue;
                 this.runtimeStatsData[key].baseValue = baseValue;
+
+                if (this.onChangeStat != null)
+                {
+                    this.onChangeStat.Invoke(new EventArgs(key, EventArgs.Operation.Change));
+                }
             }
 
             for (int i = 0; i < stats.attrs.Length; ++i)
@@ -913,6 +977,11 @@
                 string key = stats.attrs[i].statUniqueID;
                 float value = stats.attrs[i].value;
                 this.runtimeAttrsData[key].value = value;
+
+                if (this.onChangeAttr != null)
+                {
+                    this.onChangeAttr.Invoke(new EventArgs(key, EventArgs.Operation.Change));
+                }
             }
 
             for (int i = 0; i < stats.stefs.Length; ++i)
@@ -926,6 +995,11 @@
 
                 RuntimeStefData stefData = new RuntimeStefData(key, timeStack);
                 this.runtimeStefsData.Add(key, stefData);
+
+                if (this.onChangeStef != null)
+                {
+                    this.onChangeStef.Invoke(new EventArgs(key, EventArgs.Operation.Change));
+                }
 
                 for (int j = 0; j < timeStack.Length; ++j)
                 {

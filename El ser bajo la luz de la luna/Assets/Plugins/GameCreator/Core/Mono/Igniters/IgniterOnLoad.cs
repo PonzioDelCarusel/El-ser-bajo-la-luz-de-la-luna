@@ -14,7 +14,7 @@
 
         private void Start()
         {
-            SaveLoadManager.Instance.onLoad += this.OnLoad;
+	        SaveLoadManager.Instance.onLoad += this.OnLoad;
         }
 
         private void OnDestroy()
@@ -24,8 +24,14 @@
         }
 
         private void OnLoad(int profile)
-		{
-            this.ExecuteTrigger(gameObject);
-		}
+        {
+	        StartCoroutine(this.DeferredOnLoad());
+        }
+
+        private IEnumerator DeferredOnLoad()
+        {
+	        yield return null;
+	        this.ExecuteTrigger(gameObject);
+        }
 	}
 }

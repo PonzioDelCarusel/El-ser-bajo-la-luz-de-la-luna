@@ -21,6 +21,7 @@
         public MBVariable[] references = new MBVariable[0];
 
         protected bool initalized = false;
+        protected bool isBeingDestroyed = false;
         private Dictionary<string, Variable> variables;
 
         // PUBLIC METHODS: ------------------------------------------------------------------------
@@ -68,6 +69,7 @@
                 REGISTER.Remove(gid);
             }
 
+            this.isBeingDestroyed = true;
             if (SaveLoadManager.IS_EXITING) return;
             SaveLoadManager.Instance.OnDestroyIGameSave(this);
 		}
@@ -164,6 +166,7 @@
         public virtual void OnLoad(object generic)
         {
             if (generic == null) return;
+            if (this.isBeingDestroyed) return;
 
             DatabaseVariables.Container container = (DatabaseVariables.Container)generic;
             int variablesContainerCount = container.variables.Count;

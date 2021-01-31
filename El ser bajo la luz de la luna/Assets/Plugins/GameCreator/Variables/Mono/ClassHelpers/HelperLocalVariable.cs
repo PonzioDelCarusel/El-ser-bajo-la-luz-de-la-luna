@@ -79,7 +79,8 @@
 
         public override Variable.DataType GetDataType(GameObject invoker = null)
         {
-            return VariablesManager.GetLocalType(invoker, this.name, true);
+            GameObject vars = this.GetGameObject(invoker);
+            return VariablesManager.GetLocalType(vars, this.name, true);
         }
     }
 }

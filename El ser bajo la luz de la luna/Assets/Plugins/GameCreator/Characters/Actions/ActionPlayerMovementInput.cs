@@ -70,7 +70,7 @@
 				value = string.Format(
 					"{0} ({1})", 
 					value, 
-					this.spMouseButton.enumDisplayNames[this.spMouseButton.intValue]
+					this.spMouseButton.enumDisplayNames[this.spMouseButton.enumValueIndex]
 				);
 			}
 

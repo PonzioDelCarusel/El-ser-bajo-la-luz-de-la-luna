@@ -259,9 +259,9 @@
 
             SaveLoadManager.IsLoading = false;
             SaveLoadManager.IsProfileLoaded = true;
-
-            if (this.onLoad != null) this.onLoad.Invoke(profile);
+            
             if (callback != null) callback.Invoke();
+            if (this.onLoad != null) this.onLoad.Invoke(profile);
         }
 
         public void LoadLast(Action callback = null)

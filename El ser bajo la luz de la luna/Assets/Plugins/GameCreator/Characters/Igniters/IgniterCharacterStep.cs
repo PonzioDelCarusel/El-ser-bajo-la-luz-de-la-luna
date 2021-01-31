@@ -20,6 +20,7 @@
             Character target = this.character.GetCharacter(gameObject);
             if (target != null)
             {
+                target.onStep.RemoveListener(this.OnStep);
                 target.onStep.AddListener(this.OnStep);
             }
         }

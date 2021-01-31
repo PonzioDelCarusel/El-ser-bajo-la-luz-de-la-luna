@@ -23,19 +23,22 @@
 
         // EXECUTABLE: ----------------------------------------------------------------------------
 
-        public override bool InstantExecute(GameObject target, IAction[] actions, int index)
+        public override IEnumerator Execute(GameObject target, IAction[] actions, int index)
         {
-            Character charTarget = this.target.GetCharacter(target);
-            if (charTarget != null)
-            {
-                if (this.overrideJumpForce) charTarget.Jump(this.jumpForce.GetValue(target));
-                else charTarget.Jump();
-            }
+	        Character charTarget = this.target.GetCharacter(target);
+	        if (charTarget != null)
+	        {
+		        float force = this.overrideJumpForce
+			        ? this.jumpForce.GetValue(target)
+			        : charTarget.characterLocomotion.jumpForce;
+		        
+		        yield return charTarget.DelayJump(0f, force);
+	        }
 
-            return true;
+	        yield return 0;
         }
 
-		// +--------------------------------------------------------------------------------------+
+        // +--------------------------------------------------------------------------------------+
 		// | EDITOR                                                                               |
 		// +--------------------------------------------------------------------------------------+
 

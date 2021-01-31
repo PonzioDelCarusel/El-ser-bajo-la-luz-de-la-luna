@@ -56,7 +56,7 @@
 
         private void OnChangeIsControllable(bool isControllable)
         {
-            this.SetVisibility(isControllable);
+            // this.SetVisibility(isControllable);
         }
 
         // PUBLIC METHODS: ------------------------------------------------------------------------

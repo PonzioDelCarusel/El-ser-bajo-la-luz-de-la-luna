@@ -81,37 +81,11 @@ MonoBehaviour:
       - Assets/Plugins/GameCreator/Behavior/
       dataPaths: []
   - module:
-      moduleID: com.gamecreator.examples.stats
-      version:
-        major: 0
-        minor: 2
-        patch: 4
-      displayName: Stats Examples
-      description: Example scenes that show some of the most common cases using the
-        Stats module
-      category: Examples
-      dependencies:
-      - moduleID: com.gamecreator.module.stats
-        version:
-          major: 0
-          minor: 2
-          patch: 4
-      tags:
-      - examples
-      authorName: Marti-Joan Nogue Coll
-      authorMail: marti@catsoft-studios.com
-      authorSite: https://gamecreator.io
-      includesData: 1
-      codePaths:
-      - Assets/Plugins/GameCreator/StatsExamples/
-      dataPaths:
-      - Assets/Plugins/GameCreatorData/Stats/
-  - module:
       moduleID: com.gamecreator.module.stats
       version:
-        major: 0
-        minor: 2
-        patch: 4
+        major: 1
+        minor: 1
+        patch: 3
       displayName: Stats
       description: Easily design game progression with unconstrained stat systems
       category: Modules
@@ -221,48 +195,219 @@ MonoBehaviour:
       - Assets/Plugins/GameCreator/Quests/
       dataPaths: []
   - module:
-      moduleID: com.gamecreator.examples.shooter
+      moduleID: com.mitschmr-studios.examples.skills
       version:
-        major: 0
+        major: 1
+        minor: 0
+        patch: 0
+      displayName: Skills Examples for Game Creator
+      description: 'Provides the skills for Game Creator examples. This module needs
+        the free mixamo assets from the Assetstore, make sure to follow the documentation. '
+      category: Module
+      dependencies:
+      - moduleID: com.mitschmr-studios.module.skills
+        version:
+          major: 1
+          minor: 0
+          patch: 0
+      - moduleID: com.gamecreator.examples.stats
+        version:
+          major: 1
+          minor: 1
+          patch: 2
+      tags: []
+      authorName: MiTschMR Studios
+      authorMail: support@mitschmr-studios.io
+      authorSite: https://docs.mitschmr-studios.io
+      includesData: 1
+      codePaths:
+      - Assets/Plugins/MiTschMRStudios/SkillsExamples/
+      dataPaths:
+      - Assets/Plugins/MiTschMRStudiosData/Skills/
+      - Assets/Plugins/GameCreatorData/Stats/
+  - module:
+      moduleID: com.mitschmr-studios.module.skills
+      version:
+        major: 1
+        minor: 0
+        patch: 9
+      displayName: Skills for Game Creator
+      description: Provides the module Skills for Game Creator
+      category: Module
+      dependencies:
+      - moduleID: com.gamecreator.module.stats
+        version:
+          major: 1
+          minor: 1
+          patch: 3
+      tags: []
+      authorName: MiTschMR Studios
+      authorMail: support@mitschmr-studios.io
+      authorSite: https://docs.mitschmr-studios.io
+      includesData: 0
+      codePaths:
+      - Assets/Plugins/MiTschMRStudios/Skills/
+      dataPaths: []
+  - module:
+      moduleID: com.gamecreator.examples.stats
+      version:
+        major: 1
         minor: 1
-        patch: 7
-      displayName: Shooter Examples
-      description: Example scenes that show how to use the Shooter module.
+        patch: 2
+      displayName: Stats Examples
+      description: Example scenes that show some of the most common cases using the
+        Stats module
       category: Examples
       dependencies:
-      - moduleID: com.gamecreator.module.shooter
+      - moduleID: com.gamecreator.module.stats
         version:
-          major: 0
+          major: 1
           minor: 1
-          patch: 7
+          patch: 1
       tags:
       - examples
-      - shooter
       authorName: Marti-Joan Nogue Coll
       authorMail: marti@catsoft-studios.com
       authorSite: https://gamecreator.io
       includesData: 1
       codePaths:
-      - Assets/Plugins/GameCreator/ShooterExample/
+      - Assets/Plugins/GameCreator/StatsExamples/
       dataPaths:
-      - Assets/Plugins/GameCreatorData/Shooter/
+      - Assets/Plugins/GameCreatorData/Stats/
   - module:
-      moduleID: com.gamecreator.module.shooter
+      moduleID: com.gamecreator.examples.traversal
       version:
         major: 0
         minor: 1
-        patch: 7
-      displayName: Shooter
-      description: Module that provides tools for using long and mid ranged weapons
-      category: Modules
-      dependencies: []
+        patch: 1
+      displayName: Traversal Examples
+      description: Example scene for the Traversal module, showing how to use all
+        the built-in parkour abilities
+      category: Examples
+      dependencies:
+      - moduleID: com.gamecreator.module.traversal
+        version:
+          major: 0
+          minor: 1
+          patch: 1
       tags:
-      - module
-      - game creator
+      - examples
+      - traversal
       authorName: Marti-Joan Nogue Coll
       authorMail: marti@catsoft-studios.com
       authorSite: https://gamecreator.io
       includesData: 0
       codePaths:
-      - Assets/Plugins/GameCreator/Shooter/
+      - Assets/Plugins/GameCreator/TraversalExamples/
+      dataPaths: []
+  - module:
+      moduleID: com.gamecreator.module.traversal
+      version:
+        major: 0
+        minor: 1
+        patch: 2
+      displayName: Traversal
+      description: An extension package for Game Creator that provides built-in and
+        customizable environment traversing abilities
+      category: Module
+      dependencies: []
+      tags:
+      - module
+      - traversal
+      authorName: Marti-Joan Nogue Coll
+      authorMail: marti@catsoft-studios.com
+      authorSite: https://gamecreator.io
+      includesData: 0
+      codePaths:
+      - Assets/Plugins/GameCreator/Traversal/
+      dataPaths: []
+  - module:
+      moduleID: com.piveclabs.examples.uicomponents
+      version:
+        major: 1
+        minor: 5
+        patch: 1
+      displayName: UI Components Examples
+      description: UI Components Examples for Game Creator
+      category: UI COMPONENT EXAMPLES WILL OVERWRITE VARIABLE DATABASE
+      dependencies: []
+      tags:
+      - UI Components
+      - game creator
+      - Examples
+      authorName: Dr Paul Pivec
+      authorMail: paul.pivec@piveclabs.com
+      authorSite: https://www.piveclabs.com
+      includesData: 1
+      codePaths:
+      - Assets/PivecLabs/UIExamples/
+      dataPaths:
+      - Assets/Plugins/GameCreatorData/Core/Resources/GameCreator/Databases/DatabaseVariables.asset
+      - Assets/Plugins/GameCreatorData/Core/Variables/
+      - Assets/Plugins/GameCreatorData/Core/Resources/GameCreator/Databases/DatabaseGeneral.asset
+  - module:
+      moduleID: com.piveclabs.modules.uicomponents
+      version:
+        major: 1
+        minor: 5
+        patch: 1
+      displayName: UI Components Module
+      description: UI Components Module for Game Creator
+      category: UI Components
+      dependencies: []
+      tags:
+      - UI Components
+      - game creator
+      authorName: Dr Paul Pivec
+      authorMail: paul.pivec@piveclabs.com
+      authorSite: https://www.piveclabs.com
+      includesData: 0
+      codePaths:
+      - Assets/PivecLabs/UIComponents/
+      dataPaths: []
+  - module:
+      moduleID: com.gamecreator.examples.melee
+      version:
+        major: 0
+        minor: 1
+        patch: 5
+      displayName: Melee Examples
+      description: Example scenes that show how to use the Melee module
+      category: Examples
+      dependencies:
+      - moduleID: com.gamecreator.module.melee
+        version:
+          major: 0
+          minor: 1
+          patch: 5
+      tags:
+      - examples
+      - melee
+      authorName: Marti-Joan Nogue Coll
+      authorMail: marti@catsoft-studios.com
+      authorSite: https://gamecreator.io
+      includesData: 0
+      codePaths:
+      - Assets/Plugins/GameCreator/MeleeExamples/
+      dataPaths:
+      - Assets/Plugins/GameCreatorData/Melee/
+  - module:
+      moduleID: com.gamecreator.module.melee
+      version:
+        major: 0
+        minor: 1
+        patch: 5
+      displayName: Melee Module
+      description: Create a complete melee combat system using visual tools
+      category: Modules
+      dependencies: []
+      tags:
+      - examples
+      - melee
+      authorName: Marti-Joan Nogue Coll
+      authorMail: marti@catsoft-studios.com
+      authorSite: https://gamecreator.io
+      includesData: 0
+      codePaths:
+      - Assets/Plugins/GameCreator/Melee/
       dataPaths: []

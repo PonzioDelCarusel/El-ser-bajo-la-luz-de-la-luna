@@ -17,7 +17,7 @@ MonoBehaviour:
     version:
       major: 1
       minor: 1
-      patch: 2
+      patch: 4
     displayName: Game Creator Examples
     description: Example scenes that show how to use Game Creator tools.
     category: Examples

@@ -59,12 +59,23 @@
         public static Variable GetListItem(GameObject target, ListVariables.Position position, int index = 0)
         {
             ListVariables list = target.GetComponent<ListVariables>();
-            return GetListItem(list, position);
+            return GetListItem(list, position, index);
         }
 
         public static Variable GetListItem(ListVariables list, ListVariables.Position position, int index = 0)
         {
             return list.Get(position, index);
+        }
+
+        public static int GetListCount(GameObject target)
+        {
+            ListVariables list = target.GetComponent<ListVariables>();
+            return GetListCount(list);
+        }
+        
+        public static int GetListCount(ListVariables list)
+        {
+            return list == null ? 0 : list.variables.Count;
         }
 
         // SETTERS: -------------------------------------------------------------------------------

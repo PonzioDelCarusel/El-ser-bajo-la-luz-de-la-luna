@@ -47,11 +47,12 @@
                 input1.SetFloat(parameter.id, parameter.value);
             }
 
-            if (stateAsset.enterClip != null)
-            {
-                float offsetTime = Mathf.Max(0.15f, fade);
-                //input1.SetDelay(offsetTime);
-            }
+            // Obsolete :-(
+            // if (stateAsset.enterClip != null)
+            // {
+            //     float offsetTime = Mathf.Max(0.15f, fade);
+            //     input1.SetDelay(offsetTime);
+            // }
             
             input1.SetTime(startTime);
             input1.SetSpeed(speed);
@@ -83,11 +84,12 @@
                 input1.SetFloat(parameter.id, parameter.value);
             }
 
-            if (stateAsset.enterClip != null)
-            {
-                float offsetTime = Mathf.Max(0.15f, fade);
-                //input1.SetDelay(offsetTime);
-            }
+            // Obsolete :-(
+            // if (stateAsset.enterClip != null)
+            // {
+            //     float offsetTime = Mathf.Max(0.15f, fade);
+            //     input1.SetDelay(offsetTime);
+            // }
 
             input1.SetTime(startTime);
             input1.SetSpeed(speed);
@@ -119,11 +121,12 @@
                 input1.SetFloat(parameter.id, parameter.value);
             }
 
-            if (stateAsset.enterClip != null)
-            {
-                float offsetTime = Mathf.Max(0.15f, fade);
-                //input1.SetDelay(offsetTime);
-            }
+            // Obsolete :-(
+            // if (stateAsset.enterClip != null)
+            // {
+            //     float offsetTime = Mathf.Max(0.15f, fade);
+            //     input1.SetDelay(offsetTime);
+            // }
 
             input1.SetTime(startTime);
             input1.SetSpeed(speed);

@@ -34,7 +34,7 @@
 
         public const string REQUIREMENTS_TITLE = "Game Creator can not be installed";
 
-        public const string MAGIC_CODE = "yo2w4kjYXvSDilkVauDX";
+        public const string MAGIC_CODE = "hYCMor77Ghviv7gAMgsw";
 
         // INITIALIZE METHODS: --------------------------------------------------------------------
 
@@ -108,8 +108,7 @@
                 Path.Combine(ASSETS_PATH, PACKAGE_PATH),
                 Config.GetUpdate().interactiveInstall
             );
-
-            Debug.Log("<b>Installation Complete</b>!");
+            
             if (scenesSetup != null && scenesSetup.Length > 0)
             {
                 EditorSceneManager.RestoreSceneManagerSetup(scenesSetup);
@@ -136,7 +135,7 @@
             bool success = true;
             string message = string.Empty;
 
-            #if UNITY_2020_1_OR_NEWER
+            #if UNITY_2021_1_OR_NEWER
             success = false;
             message = string.Format("{0} {1}", ERR_ALPHA, ERR_LTS);
             #elif UNITY_2019_4_OR_NEWER

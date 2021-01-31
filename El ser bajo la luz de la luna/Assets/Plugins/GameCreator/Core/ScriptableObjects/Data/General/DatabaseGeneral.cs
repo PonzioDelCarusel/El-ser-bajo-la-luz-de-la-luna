@@ -33,6 +33,7 @@
         [Header("Touchstick")]
         public GameObject prefabTouchstick;
         public bool forceDisplayInEditor = false;
+        public TouchStick.Mode touchstickMode = TouchStick.Mode.Continuous;
 
         [Tooltip("Should saving/loading a game store/restore which scene the player was in?")]
         public bool saveScenes = true;

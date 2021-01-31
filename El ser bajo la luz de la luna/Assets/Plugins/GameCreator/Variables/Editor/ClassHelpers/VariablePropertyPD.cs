@@ -53,15 +53,15 @@
 
             SerializedProperty spType = property.FindPropertyRelative(PROP_TYPE);
             EditorGUI.PropertyField(rectOption, spType, label);
-
-            int option = spType.intValue;
+            
+            int option = spType.enumValueIndex;
             switch (option)
             {
                 case 0 : this.PaintContent(property, rectContent, PROP_GLOBAL); break;    
                 case 1 : this.PaintContent(property, rectContent, PROP_LOCAL); break;
                 case 2: this.PaintContent(property, rectContent, PROP_LIST); break;
             }
-		}
+        }
 
         private void PaintContent(SerializedProperty property, Rect rect, string prop)
         {

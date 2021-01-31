@@ -37,14 +37,14 @@
 		public override bool Check(GameObject target)
 		{
             GameObject targetGO = this.target.GetGameObject(target);
-            if (targetGO == null)
+            if (!targetGO)
             {
                 Debug.LogError("Condition Stat: No target defined");
                 return false;
             }
 
             Stats stats = targetGO.GetComponentInChildren<Stats>();
-            if (stats == null)
+            if (!stats)
             {
                 Debug.LogError("Condition Stat: Could not get Stats component in target");
                 return false;
@@ -87,7 +87,7 @@
 
 		public override string GetNodeTitle()
 		{
-            string statName = (this.stat == null ? "(none)" : this.stat.stat.uniqueName);
+            string statName = (!this.stat ? "(none)" : this.stat.stat.uniqueName);
             string compareName = this.spCompare.enumDisplayNames[(int)this.compare];
 
             return string.Format(

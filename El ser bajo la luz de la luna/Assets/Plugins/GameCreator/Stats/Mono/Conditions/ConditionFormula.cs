@@ -42,8 +42,8 @@
             GameObject targetGO = this.target.GetGameObject(target);
             GameObject otherGO = this.other.GetGameObject(target);
 
-            if (targetGO != null) statsTarget = targetGO.GetComponentInChildren<Stats>(true);
-            if (otherGO != null) statsOther = otherGO.GetComponentInChildren<Stats>(true);
+            if (targetGO) statsTarget = targetGO.GetComponentInChildren<Stats>(true);
+            if (otherGO) statsOther = otherGO.GetComponentInChildren<Stats>(true);
 
             float formulaValue = this.formula.formula.Calculate(0.0f, statsTarget, statsOther);
 
@@ -85,7 +85,7 @@
 
 		public override string GetNodeTitle()
 		{
-            string formulaName = (this.formula == null ? "(none)" : this.formula.name);
+            string formulaName = (!this.formula ? "(none)" : this.formula.name);
             string compareName = this.spCompare.enumDisplayNames[(int)this.compare];
 
             return string.Format(

@@ -40,8 +40,8 @@ namespace GameCreator.Localization
 
             if (this.textAreaStyle == null)
             {
-                this.textAreaStyle = new GUIStyle();
-                this.textAreaStyle.margin = new RectOffset(5, 5, 0, 0);
+                this.textAreaStyle = new GUIStyle(EditorStyles.textArea);
+                // this.textAreaStyle.margin = new RectOffset(5, 5, 0, 0);
                 this.textAreaStyle.wordWrap = true;
             }
 
@@ -49,12 +49,13 @@ namespace GameCreator.Localization
                 EditorGUIUtility.fieldWidth, EditorGUIUtility.fieldWidth,
                 EditorGUIUtility.singleLineHeight * 3f,
                 EditorGUIUtility.singleLineHeight * 3f,
-                textAreaStyle
+                this.textAreaStyle
             );
 
             spContent.stringValue = EditorGUI.TextArea(
                 textAreaRect,
-                spContent.stringValue
+                spContent.stringValue,
+                this.textAreaStyle
             );
 
             if (translationOn != nextTranslationOn)

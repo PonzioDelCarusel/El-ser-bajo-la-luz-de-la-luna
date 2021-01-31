@@ -54,6 +54,8 @@
 		private void Awake()
 		{
 			this.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
+			this.isExecuting = false;
+			this.executingIndex = -1;
 		}
 
         private void OnEnable()

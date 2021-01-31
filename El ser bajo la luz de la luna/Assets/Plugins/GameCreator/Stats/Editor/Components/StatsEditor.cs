@@ -50,6 +50,7 @@
 
         private Stats instance;
         private SerializedProperty spStatsOverridesList;
+        private SerializedProperty spSaveStats;
 
         private StatsAsset statsAsset;
         private AttrsAsset attrsAsset;
@@ -69,6 +70,7 @@
             this.instance = (Stats)this.target;
 
             this.spStatsOverridesList = serializedObject.FindProperty("statsOverrides");
+            this.spSaveStats = serializedObject.FindProperty("saveStats");
             this.spStatsOverrides = new Dictionary<string, StatOverride>();
 
             int overrideCount = this.spStatsOverridesList.arraySize;
@@ -177,6 +179,12 @@
             this.PaintStatusEffects();
 
             EditorGUILayout.Space();
+
+            this.spSaveStats.boolValue = EditorGUILayout.ToggleLeft(
+                this.spSaveStats.displayName,
+                this.spSaveStats.boolValue
+            );
+
             GlobalEditorID.Paint(this.instance);
             serializedObject.ApplyModifiedProperties();
         }

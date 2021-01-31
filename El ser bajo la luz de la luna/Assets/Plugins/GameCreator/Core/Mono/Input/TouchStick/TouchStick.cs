@@ -7,11 +7,18 @@
     [AddComponentMenu("")]
     public class TouchStick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
     {
+        public enum Mode
+        {
+            Continuous,
+            Discrete
+        }
+        
         // PROPERTIES: ----------------------------------------------------------------------------
 
         public Image jsContainer;
         public Image joystick;
 
+        private DatabaseGeneral general;
         private Vector3 direction = Vector3.zero;
 
 		// EVENT METHODS: -------------------------------------------------------------------------
@@ -71,7 +78,25 @@
 
         public Vector2 GetDirection()
         {
-            return this.direction;
+            if (this.general == null) this.general = DatabaseGeneral.Load();
+            
+            if (this.general == null || this.general.touchstickMode == Mode.Continuous)
+            {
+                return this.direction;
+            }
+
+            float magnitude = this.direction.magnitude;
+            Vector3 result = this.direction.normalized;
+            
+            if (magnitude >= 0.75f) return result * 1f;
+            if (magnitude >= 0.1f) return result * 0.5f;
+            
+            return Vector2.zero;
+        }
+
+        public void SetDirection(Vector2 direction)
+        {
+            this.direction = direction;
         }
     }
 }

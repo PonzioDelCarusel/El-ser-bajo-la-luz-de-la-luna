@@ -15,9 +15,9 @@ MonoBehaviour:
   module:
     moduleID: com.gamecreator.module.stats
     version:
-      major: 0
-      minor: 2
-      patch: 4
+      major: 1
+      minor: 1
+      patch: 3
     displayName: Stats
     description: Easily design game progression with unconstrained stat systems
     category: Modules

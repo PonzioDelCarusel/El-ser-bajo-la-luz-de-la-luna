@@ -9,6 +9,8 @@
     [AddComponentMenu("UI/Game Creator/Attribute UI", 0)]
 	public class AttributeUI : MonoBehaviour
     {
+        private const float TRANSITION_SMOOTH = 0.25f;
+
         public TargetGameObject target = new TargetGameObject(TargetGameObject.Target.Player);
 
         [AttributeSelector]
@@ -20,7 +22,7 @@
         public Text description;
         public Text shortName;
 
-        [Tooltip("{0}: The current value of the Attribute\n{1}: The maximum value or stat value")]
+        [Tooltip("{0}: The current value of the Attribute\n{1}: The maximum value or stat value\n{2}: The minimum value")]
         public string valueFormat = "{0}/{1}";
         public Text value;
 
@@ -28,14 +30,24 @@
         public RectTransform valueScaleX;
         public RectTransform valueScaleY;
 
-        private bool exitingApplication = false;
+        public bool smoothTransitionUp;
+        public bool smoothTransitionDown;
+        public float transitionSpeed = TRANSITION_SMOOTH;
+        public float transitionDelay = 0.2f;
+
+        private float transitionVelocity;
+        private float transitionCurrentPercent;
+        private float transitionTargetPercent;
+        private float transitionTime;
+
+        private bool exitingApplication;
 
         // INITIALIZERS: --------------------------------------------------------------------------
 
         private void Start()
         {
             Stats stats = this.GetStatsTarget();
-            if (stats == null) return;
+            if (!stats) return;
 
             stats.AddOnChangeAttr(this.UpdateAttrUI);
             this.UpdateAttrUI(null);
@@ -46,7 +58,7 @@
             if (this.exitingApplication) return;
 
             Stats stats = this.GetStatsTarget();
-            if (stats == null) return;
+            if (!stats) return;
 
             stats.RemoveOnChangeAttr(this.UpdateAttrUI);
         }
@@ -56,17 +68,48 @@
             this.exitingApplication = true;
         }
 
+        private void Update()
+        {
+            float targetPercent = Time.time > this.transitionTime + this.transitionDelay
+                ? this.transitionTargetPercent
+                : this.transitionCurrentPercent;
+
+            this.transitionCurrentPercent = Mathf.SmoothDamp(
+                this.transitionCurrentPercent,
+                targetPercent,
+                ref this.transitionVelocity,
+                this.transitionSpeed
+            );
+
+            if (this.valueFillImage)
+            {
+                this.valueFillImage.fillAmount = this.transitionCurrentPercent;
+            }
+
+            if (this.valueScaleX) this.valueScaleX.localScale = new Vector3(
+                this.transitionCurrentPercent,
+                this.valueScaleX.localScale.y,
+                this.valueScaleX.localScale.z
+            );
+
+            if (this.valueScaleY) this.valueScaleY.localScale = new Vector3(
+                this.valueScaleY.localScale.x,
+                this.transitionCurrentPercent,
+                this.valueScaleY.localScale.z
+            );
+        }
+
         // PRIVATE METHODS: -----------------------------------------------------------------------
 
         private Stats GetStatsTarget()
         {
-            if (this.attribute == null) return null;
+            if (!this.attribute) return null;
 
             GameObject targetGO = this.target.GetGameObject(gameObject);
-            if (targetGO == null) return null;
+            if (!targetGO) return null;
 
             Stats stats = targetGO.GetComponentInChildren<Stats>(true);
-            if (stats == null) return null;
+            if (!stats) return null;
 
             return stats;
         }
@@ -79,38 +122,37 @@
         private void UpdateAttrUI(Stats.EventArgs args)
         {
             Stats stats = this.GetStatsTarget();
-            if (stats == null) return;
+            if (!stats) return;
 
             string attrID = this.attribute.attribute.uniqueName;
 
-            if (this.icon != null) this.icon.overrideSprite = stats.GetAttrIcon(attrID);
-            if (this.color != null) this.color.color = stats.GetAttrColor(attrID);
-            if (this.title != null) this.title.text = stats.GetAttrDescription(attrID);
-            if (this.description != null) this.description.text = stats.GetAttrDescription(attrID);
-            if (this.shortName != null) this.shortName.text = stats.GetAttrShortName(attrID);
+            if (this.icon) this.icon.overrideSprite = stats.GetAttrIcon(attrID);
+            if (this.color) this.color.color = stats.GetAttrColor(attrID);
+            if (this.title) this.title.text = stats.GetAttrTitle(attrID);
+            if (this.description) this.description.text = stats.GetAttrDescription(attrID);
+            if (this.shortName) this.shortName.text = stats.GetAttrShortName(attrID);
 
             float curAttr = stats.GetAttrValue(attrID);
             float maxAttr = stats.GetAttrMaxValue(attrID);
+            float minAttr = this.attribute.attribute.minValue;
 
-            if (this.value != null) this.value.text = string.Format(
+            if (this.value) this.value.text = string.Format(
                 this.valueFormat,
                 curAttr,
-                maxAttr
+                maxAttr,
+                minAttr
             );
 
-            if (this.valueFillImage != null) this.valueFillImage.fillAmount = (curAttr / maxAttr);
+            float percent = Mathf.InverseLerp(minAttr, maxAttr, curAttr);
+            this.transitionTargetPercent = percent;
+            this.transitionVelocity = 0f;
+            this.transitionTime = Time.time;
 
-            if (this.valueScaleX != null) this.valueScaleX.localScale = new Vector3(
-                (curAttr / maxAttr),
-                this.valueScaleX.localScale.y,
-                this.valueScaleX.localScale.z
-            );
-
-            if (this.valueScaleY != null) this.valueScaleY.localScale = new Vector3(
-                this.valueScaleY.localScale.x,
-                (curAttr / maxAttr),
-                this.valueScaleY.localScale.z
-            );
+            if ((this.transitionCurrentPercent < percent && !this.smoothTransitionUp) ||
+                (this.transitionCurrentPercent > percent && !this.smoothTransitionDown))
+            {
+                this.transitionCurrentPercent = percent;
+            }
         }
     }
 }

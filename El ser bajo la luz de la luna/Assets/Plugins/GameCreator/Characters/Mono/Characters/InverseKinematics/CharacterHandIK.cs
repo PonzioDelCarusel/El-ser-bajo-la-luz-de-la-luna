@@ -1,4 +1,6 @@
-﻿namespace GameCreator.Characters
+﻿using System;
+
+namespace GameCreator.Characters
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -6,7 +8,7 @@
     using GameCreator.Core;
 
     [AddComponentMenu("")]
-    public class CharacterHandIK : MonoBehaviour
+    public class CharacterHandIK : MonoBehaviour, IToggleIK
     {
         public enum Limb
         {
@@ -44,7 +46,7 @@
                 this.targetPosition = Vector3.zero;
             }
 
-            public void Update(Animator animator)
+            public void Update(Animator animator, float activeValue)
             {
                 if (this.targetTransform != null)
                 {
@@ -82,8 +84,8 @@
                     this.currentPosition = this.targetPosition;
                 }
 
-                animator.SetIKPositionWeight(this.handIK, this.currentWeight);
-                animator.SetIKPosition(this.handIK, this.currentPosition);
+                animator.SetIKPositionWeight(this.handIK, this.currentWeight * activeValue);
+                animator.SetIKPosition(this.handIK, this.currentPosition * activeValue);
             }
 
             public void Reach(Animator animator, Transform targetTransform, float duration)
@@ -119,6 +121,10 @@
         public CharacterAnimator.EventIK eventBeforeIK = new CharacterAnimator.EventIK();
         public CharacterAnimator.EventIK eventAfterIK = new CharacterAnimator.EventIK();
 
+        public bool Active { get; set; }
+        private float activeValue = 0f;
+        private float activeValueVelocity = 0f;
+
         // INITIALIZERS: --------------------------------------------------------------------------
 
         public void Setup(Character character)
@@ -134,6 +140,9 @@
 
             this.handL = new Hand(handLTransform, AvatarIKGoal.LeftHand);
             this.handR = new Hand(handRTransform, AvatarIKGoal.RightHand);
+
+            this.Active = true;
+            this.activeValue = 1f;
         }
 
         // IK METHODS: ----------------------------------------------------------------------------
@@ -156,7 +165,16 @@
 
         private void UpdateHand(Hand hand)
         {
-            hand.Update(this.animator);
+            hand.Update(this.animator, this.activeValue);
+        }
+
+        private void Update()
+        {
+            this.activeValue = Mathf.SmoothDamp(
+                this.activeValue, 
+                this.Active ? 1f : 0f, 
+                ref this.activeValueVelocity, 0.05f
+            );
         }
 
         // PUBLIC METHODS: ------------------------------------------------------------------------

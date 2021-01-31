@@ -12,9 +12,16 @@
             OnKeyUp,
             OnTimeout
         }
+        
+        public enum TimeMode
+        {
+            Game,
+            Unscaled
+        }
 
 		public KeyCode keyCode = KeyCode.Space;
         public float holdTime = 0.5f;
+        public TimeMode timeMode = TimeMode.Game;
         public ReleaseType execute = ReleaseType.OnKeyUp;
 
         private float downTime = -9999.0f;
@@ -26,7 +33,8 @@
 
 		private void Update()
 		{
-            if (this.isPressing && (Time.time - this.downTime) > this.holdTime)
+            float time = this.timeMode == TimeMode.Game ? Time.time : Time.unscaledTime;
+            if (this.isPressing && (time - this.downTime) > this.holdTime)
             {
                 switch (this.execute)
                 {
@@ -50,7 +58,7 @@
 
             if (Input.GetKeyDown(this.keyCode))
             {
-                this.downTime = Time.time;
+                this.downTime = time;
                 this.isPressing = true;
             }
 

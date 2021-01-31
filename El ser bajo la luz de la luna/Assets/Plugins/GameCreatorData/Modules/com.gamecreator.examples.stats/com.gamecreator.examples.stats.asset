@@ -15,9 +15,9 @@ MonoBehaviour:
   module:
     moduleID: com.gamecreator.examples.stats
     version:
-      major: 0
-      minor: 2
-      patch: 4
+      major: 1
+      minor: 1
+      patch: 2
     displayName: Stats Examples
     description: Example scenes that show some of the most common cases using the
       Stats module
@@ -25,9 +25,9 @@ MonoBehaviour:
     dependencies:
     - moduleID: com.gamecreator.module.stats
       version:
-        major: 0
-        minor: 2
-        patch: 4
+        major: 1
+        minor: 1
+        patch: 1
     tags:
     - examples
     authorName: Marti-Joan Nogue Coll
