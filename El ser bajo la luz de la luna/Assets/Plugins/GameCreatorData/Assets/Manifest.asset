@@ -411,3 +411,189 @@ MonoBehaviour:
       codePaths:
       - Assets/Plugins/GameCreator/Melee/
       dataPaths: []
+  - module:
+      moduleID: com.firechickengames.examples.combat
+      version:
+        major: 0
+        minor: 12
+        patch: 0
+      displayName: Combat Examples
+      description: Example scenes that show how to use the combat module.
+      category: Examples
+      dependencies:
+      - moduleID: com.firechickengames.module.combat
+        version:
+          major: 0
+          minor: 12
+          patch: 0
+      tags:
+      - examples
+      - game creator
+      - fire chicken games
+      authorName: Ethan Hann
+      authorMail: ethan@firechickengames.com
+      authorSite: http://firechickengames.com
+      includesData: 0
+      codePaths:
+      - Assets/Plugins/FireChickenGames/CombatExamples/
+      dataPaths:
+      - Assets/Plugins/FireChickenGamesData/Combat/
+  - module:
+      moduleID: com.firechickengames.examples.meleecombat
+      version:
+        major: 0
+        minor: 3
+        patch: 3
+      displayName: Combat Examples (Melee)
+      description: Example scenes that show how to use the combat module.
+      category: Examples
+      dependencies:
+      - moduleID: com.gamecreator.examples.melee
+        version:
+          major: 0
+          minor: 0
+          patch: 1
+      - moduleID: com.firechickengames.examples.combat
+        version:
+          major: 0
+          minor: 10
+          patch: 0
+      - moduleID: com.firechickengames.module.meleecombat
+        version:
+          major: 0
+          minor: 3
+          patch: 0
+      tags:
+      - examples
+      - game creator
+      - fire chicken games
+      authorName: Ethan Hann
+      authorMail: ethan@firechickengames.com
+      authorSite: http://firechickengames.com
+      includesData: 0
+      codePaths:
+      - Assets/Plugins/FireChickenGames/MeleeCombatExamples/
+      dataPaths:
+      - Assets/Plugins/FireChickenGamesData/Combat/
+  - module:
+      moduleID: com.firechickengames.examples.shootercombat
+      version:
+        major: 0
+        minor: 2
+        patch: 1
+      displayName: Combat Examples (Shooter)
+      description: Examples for the Shooter module integration for the Combat module.
+      category: Examples
+      dependencies:
+      - moduleID: com.gamecreator.examples.shooter
+        version:
+          major: 0
+          minor: 1
+          patch: 7
+      - moduleID: com.firechickengames.examples.combat
+        version:
+          major: 0
+          minor: 11
+          patch: 0
+      - moduleID: com.firechickengames.module.shootercombat
+        version:
+          major: 0
+          minor: 2
+          patch: 0
+      tags:
+      - examples
+      - game creator
+      - fire chicken games
+      authorName: Ethan Hann
+      authorMail: ethan@firechickengames.com
+      authorSite: http://firechickengames.com
+      includesData: 0
+      codePaths:
+      - Assets/Plugins/FireChickenGames/ShooterCombatExamples/
+      dataPaths:
+      - Assets/Plugins/FireChickenGamesData/Combat/
+  - module:
+      moduleID: com.firechickengames.module.combat
+      version:
+        major: 0
+        minor: 12
+        patch: 0
+      displayName: Combat
+      description: Enhanced and improved workflows for Game Creator combat-related
+        modules.
+      category: Modules
+      dependencies: []
+      tags:
+      - module
+      - game creator
+      - fire chicken games
+      authorName: Ethan Hann
+      authorMail: ethan@firechickengames.com
+      authorSite: http://firechickengames.com
+      includesData: 0
+      codePaths:
+      - Assets/Plugins/FireChickenGames/Combat/
+      dataPaths: []
+  - module:
+      moduleID: com.firechickengames.module.meleecombat
+      version:
+        major: 0
+        minor: 3
+        patch: 0
+      displayName: Combat (Melee)
+      description: Enhanced and improved workflows for Game Creator combat-related
+        modules.
+      category: Modules
+      dependencies:
+      - moduleID: com.gamecreator.module.melee
+        version:
+          major: 0
+          minor: 0
+          patch: 1
+      - moduleID: com.firechickengames.module.combat
+        version:
+          major: 0
+          minor: 8
+          patch: 0
+      tags:
+      - module
+      - game creator
+      - fire chicken games
+      authorName: Ethan Hann
+      authorMail: ethan@firechickengames.com
+      authorSite: http://firechickengames.com
+      includesData: 0
+      codePaths:
+      - Assets/Plugins/FireChickenGames/MeleeCombat/
+      dataPaths: []
+  - module:
+      moduleID: com.firechickengames.module.shootercombat
+      version:
+        major: 0
+        minor: 2
+        patch: 0
+      displayName: Combat (Shooter)
+      description: Shooter module integration for the Combat module.
+      category: Modules
+      dependencies:
+      - moduleID: com.gamecreator.module.shooter
+        version:
+          major: 0
+          minor: 1
+          patch: 7
+      - moduleID: com.firechickengames.module.combat
+        version:
+          major: 0
+          minor: 10
+          patch: 0
+      tags:
+      - module
+      - game creator
+      - fire chicken games
+      authorName: Ethan Hann
+      authorMail: ethan@firechickengames.com
+      authorSite: http://firechickengames.com
+      includesData: 0
+      codePaths:
+      - Assets/Plugins/FireChickenGames/ShooterCombat/
+      dataPaths: []

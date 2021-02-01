@@ -43,8 +43,8 @@ MonoBehaviour:
     y: 0
     width: 317
     height: 947
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 35
+  controlID: 54
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -438,7 +438,7 @@ MonoBehaviour:
     height: 295
   m_ViewDataDictionary: {fileID: 0}
   m_SearchFilter:
-    m_NameFilter: 
+    m_NameFilter: combat
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -462,8 +462,8 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 36460000
-    m_LastClickedID: 17974
+    m_SelectedIDs: 
+    m_LastClickedID: 0
     m_ExpandedIDs: 0000000036460000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -519,7 +519,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300004c4600008c450000145e000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -639,9 +639,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 2.4072523, y: 0.043276068, z: -5.215389}
+    m_Target: {x: 2.5436316, y: 0.00668652, z: -5.280453}
     speed: 2
-    m_Value: {x: 2.4072523, y: 0.043276068, z: -5.215389}
+    m_Value: {x: 2.5436316, y: 0.00668652, z: -5.280453}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -691,9 +691,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 7.072543
+    m_Target: 7.723394
     speed: 2
-    m_Value: 7.072543
+    m_Value: 7.3908076
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -769,8 +769,8 @@ MonoBehaviour:
     vZoomLockedByDefault: 0
     m_HBaseRangeMin: -644
     m_HBaseRangeMax: 644
-    m_VBaseRangeMin: -305
-    m_VBaseRangeMax: 305
+    m_VBaseRangeMin: -294.5
+    m_VBaseRangeMax: 294.5
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -787,11 +787,11 @@ MonoBehaviour:
     m_DrawArea:
       serializedVersion: 2
       x: 0
-      y: 0
+      y: 21
       width: 1288
-      height: 610
+      height: 589
     m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 644, y: 305}
+    m_Translation: {x: 644, y: 294.5}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
@@ -799,9 +799,9 @@ MonoBehaviour:
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
       x: -644
-      y: -305
+      y: -294.5
       width: 1288
-      height: 610
+      height: 589
     m_MinimalGUI: 1
   m_defaultScale: 1
   m_LastWindowPixelSize: {x: 1288, y: 610}
