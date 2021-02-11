@@ -43,8 +43,8 @@ MonoBehaviour:
     y: 0
     width: 317
     height: 947
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 115
+  controlID: 74
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -121,8 +121,8 @@ MonoBehaviour:
     y: 0
     width: 523
     height: 947
-  m_MinSize: {x: 276, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 11}
@@ -151,10 +151,10 @@ MonoBehaviour:
     y: 30
     width: 2560
     height: 947
-  m_MinSize: {x: 709, y: 492}
-  m_MaxSize: {x: 18004, y: 14042}
+  m_MinSize: {x: 707, y: 492}
+  m_MaxSize: {x: 18002, y: 14042}
   vertical: 0
-  controlID: 71
+  controlID: 194
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -177,7 +177,7 @@ MonoBehaviour:
     y: 0
     width: 2560
     height: 997
-  m_MinSize: {x: 875, y: 300}
+  m_MinSize: {x: 875, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &8
 MonoBehaviour:
@@ -450,21 +450,21 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Plugins/GameCreator/Traversal/Prefabs
+    - Assets/Ambiente/_WesternCliffs/Prefabs
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/Plugins/GameCreator/Traversal/Prefabs
+  - Assets/Ambiente/_WesternCliffs/Prefabs
   m_LastFoldersGridSize: 96
   m_LastProjectPath: D:\Unity\ElSer2.0\El-ser-bajo-la-luz-de-la-luna\El ser bajo
     la luz de la luna
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 301}
-    m_SelectedIDs: 4c880000
-    m_LastClickedID: 34892
-    m_ExpandedIDs: 00000000064900000c4900001a490000fe7b0000b2860000
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: b24b0000
+    m_LastClickedID: 19378
+    m_ExpandedIDs: 000000001c4a00001e4a0000884a00008e4a0000984a0000a84a0000aa4a00000c4f00000e4f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -492,7 +492,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 04470000
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000006490000
+    m_ExpandedIDs: 000000001c4a00001e4a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -544,7 +544,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 23}
+    m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 96
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 223
@@ -576,10 +576,10 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
+      scrollPos: {x: 0, y: 8}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 64fbffffd6460000
+      m_ExpandedIDs: 84cfffff8ecfffff64fbffffda460000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -639,9 +639,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 11.008508, y: 11.317289, z: 53.72024}
+    m_Target: {x: 190.49646, y: -6.5271215, z: 82.0443}
     speed: 2
-    m_Value: {x: 11.008508, y: 11.317289, z: 53.72024}
+    m_Value: {x: 190.49646, y: -6.5271215, z: 82.0443}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -687,13 +687,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.14525011, y: 0.02433372, z: -0.0035744077, w: -0.98909825}
+    m_Target: {x: -0.15419051, y: -0.005338325, z: 0.0008313429, w: -0.9880365}
     speed: 2
-    m_Value: {x: -0.14524882, y: 0.024333501, z: -0.0035743758, w: -0.9890894}
+    m_Value: {x: -0.15418896, y: -0.0053382716, z: 0.00083133456, w: -0.9880266}
   m_Size:
-    m_Target: 7.1459894
+    m_Target: 85.40433
     speed: 2
-    m_Value: 6.8382673
+    m_Value: 81.72663
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -711,7 +711,7 @@ MonoBehaviour:
     m_FarClip: 10000
     m_DynamicClip: 1
     m_OcclusionCulling: 0
-  m_LastSceneViewRotation: {x: -0.09454864, y: 0.049851384, z: -0.004744873, w: -0.9942683}
+  m_LastSceneViewRotation: {x: -0.16896038, y: -0.020108143, z: 0.0034461052, w: -0.9854214}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
