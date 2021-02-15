@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d072b01d4c1747fca7b96f6a53ad25c, type: 3}
+  m_Name: Quests
+  m_EditorClassIdentifier: 
+  title:
+    content: 
+    postProcess: 0
+    translationID: 0
+  description:
+    content: 
+    postProcess: 0
+    translationID: 0
+  sprite: {fileID: 0}
+  uniqueID: 
+  internalName: 
+  status: 0
+  isHidden: 0
+  canBeAbandoned: 0
+  children: []
+  parent: {fileID: 0}
+  reactions: {fileID: 0}
+  type: 0
+  progress: 0
+  progressMaxValue: 1

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652a1dbea10bf4b29ab1282ea1d4d080, type: 3}
   m_Name: DatabaseStats
   m_EditorClassIdentifier: 
-  statsAsset: {fileID: 0}
-  attrsAsset: {fileID: 0}
-  statusEffectsAsset: {fileID: 0}
+  statsAsset: {fileID: 11400000, guid: 609ac7b3dd8dbfe44bf07c278b783743, type: 2}
+  attrsAsset: {fileID: 11400000, guid: 38f59f938ac9e8a4ba393b6e75727017, type: 2}
+  statusEffectsAsset: {fileID: 11400000, guid: aafd91c34d6d1f64d800eef3bde01f3e, type: 2}
